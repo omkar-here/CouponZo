@@ -13,13 +13,16 @@ import Landing from "./pages/Landing";
 import "./App.css";
 import "./Styles/styles.css";
 import RootLayout from "./Layouts/RootLayout";
+import Login from "./pages/Login";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
     children: [{ path: "/", element: <Dashboard /> }],
   },
-  { path: "/*", element: <Landing /> },
+  { path: "/land", element: <Landing /> },
+  { path: "/login", element: <Login /> },
 ]);
 
 function App() {
