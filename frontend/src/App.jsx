@@ -14,6 +14,7 @@ import "./App.css";
 import "./Styles/styles.css";
 import RootLayout from "./Layouts/RootLayout";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
   },
   { path: "/land", element: <Landing /> },
   { path: "/login", element: <Login /> },
+  { path: "/register", element: <Register /> },
 ]);
 
 function App() {
