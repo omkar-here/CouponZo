@@ -1,6 +1,8 @@
 const app = require("./index");
 const mongoose = require("mongoose");
 
+mongoose.set("strictQuery", true);
+
 require("dotenv").config();
 
 mongoose.connect(process.env.ATLAS, {
@@ -10,14 +12,13 @@ mongoose.connect(process.env.ATLAS, {
 console.log(process.env.ATLAS);
 const db = mongoose.connection;
 
-
-  db.on("error", console.error.bind(console, "connection error"));
-  db.once("open", () => {
-    console.log("Database Connected");
-  });
+db.on("error", console.error.bind(console, "connection error"));
+db.once("open", () => {
+  console.log("Database Connected");
+});
 
 app.get("/", (req, res) => {
-  res.render("<h1>Hello world</h1>")
+  res.render("<h1>Hello world</h1>");
   console.log("request");
 });
 
