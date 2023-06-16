@@ -99,7 +99,7 @@ function RootLayout() {
           </ul>
         </div>
       </aside>
-      <main>
+      <main className="ml-64">
         <Outlet />
       </main>
     </div>

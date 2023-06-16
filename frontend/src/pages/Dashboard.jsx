@@ -4,7 +4,7 @@ import CircularProgressBar from "../Components/CircularProgressBar";
 export const Dashboard = (props) => {
   return (
     <div>
-      <div className="ml-[100px] mt-[-60px]">
+      <div className="mt-[-60px]">
         <h1 className="flex justify-items-start text-5xl">Dashboard </h1>
         {/* <div className="p-4 sm:ml-64"> */}
         <div className="p-4 border-2  border-gray-200 border-dashed rounded-lg dark:border-gray-700 w-11/12">

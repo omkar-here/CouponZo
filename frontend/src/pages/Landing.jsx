@@ -6,7 +6,7 @@ function Landing() {
   return (
     <div className="bg-white border-gray-200 dark:bg-gray-900 h-full min-h-screen dark:border-gray-700">
       <Navbar />
-      <div className="bg-white max-w-7xl m-auto text-white">
+      <div className="bg-white m-auto text-white">
         <Hero />
       </div>
       <Footer />
