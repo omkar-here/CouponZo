@@ -22,6 +22,6 @@ app.get("/", (req, res) => {
   console.log("request");
 });
 
-app.listen(3001, (req, res) => {
+app.listen(3000, (req, res) => {
   console.log("Listening to the server");
 });

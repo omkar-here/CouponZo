@@ -1,12 +1,9 @@
 const express = require("express");
 const app = express();
 const User = require("../models/User");
-
 module.exports.register = async (req, res, next) => {
   try {
-    console.log("IN usercontroller");
     const { email, userName, password, companyType } = req.body;
-    console.log(userName, companyType);
     const user = await User.create({
       email: email,
       userName: userName,
@@ -14,16 +11,7 @@ module.exports.register = async (req, res, next) => {
       companyType: companyType,
     });
     res.status(201).json(user);
-    // const registeredUser = await User.register(user, password);
-    // req.login(registeredUser, (err) => {
-    //   if (err) return next(err);
-    //   console.log(err);
-    // });
-    // } catch (e) {
-    //   req.flash("error", `${e.message}`);
-    //   console.log(e);
-    // }
-    // next();
+   
   } catch (err) {
     console.log(err);
   }
