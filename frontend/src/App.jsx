@@ -16,16 +16,19 @@ import RootLayout from "./Layouts/RootLayout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <RootLayout />,
-    children: [{ path: "/", element: <Dashboard /> }],
-  },
-  { path: "/land", element: <Landing /> },
-  { path: "/login", element: <Login /> },
-  { path: "/register", element: <Register /> },
-]);
+const router = createBrowserRouter(
+  createRoutesFromElements(<>
+    <Route path="/register" element={<Register />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/" element={<RootLayout />}>
+      <Route index element={<Dashboard />} />
+    </Route>
+  </>
+    
+
+
+  )
+);
 
 function App() {
   const percentage = 500;
