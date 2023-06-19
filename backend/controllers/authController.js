@@ -21,10 +21,15 @@ module.exports.register = async (req, res, next) => {
       companyType: companyType,
     });
     const token = createToken(user._id);
-    console.log("reached here")
-    console.log(token)
-    res.cookie('jwt', token, {httpOnly: false,sameSite: false, maxAge: maxAge});
-    res.status(201).json({user : user._id});
+    console.log("reached here");
+    console.log(token);
+    res.cookie("lol", "lol");
+    res.cookie("jwt", token, {
+      // httpOnly: false,
+      // sameSite: false,
+      maxAge: maxAge,
+    });
+    res.status(201).json({ user: user._id });
   } catch (err) {
     console.log(err);
   }
@@ -38,5 +43,4 @@ module.exports.clear = async (req, res, next) => {
   const status = await User.deleteMany();
   console.log("All clear");
   res.status(200);
-}
-
+};
