@@ -18,9 +18,9 @@ import Register from "./pages/Register";
 
 const router = createBrowserRouter(
   createRoutesFromElements(<>
-    <Route path="/register" element={<Register />} />
+    <Route exact path="/" element={<Register />} />
     <Route path="/login" element={<Login />} />
-    <Route path="/" element={<RootLayout />}>
+    <Route path="/dashboard" element={<RootLayout />}>
       <Route index element={<Dashboard />} />
     </Route>
   </>
