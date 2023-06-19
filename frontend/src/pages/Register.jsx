@@ -12,7 +12,7 @@ function Register() {
   })
   
   return (
-    <div className="bg-white border-gray-200 dark:bg-gray-900 h-full min-h-screen dark:border-gray-700">
+    <div className="bg-white relative min-h-screen border-gray-200 dark:bg-gray-900 dark:border-gray-700">
       <Navbar />
       <div className="flex mt-[30px] flex-row max-w-7xl my-auto h-[70vh] mx-auto items-center justify-center">
         <img src={logo} alt="logo" className="mx-auto h-84 w-auto" />
@@ -42,7 +42,7 @@ function Register() {
               </div>
               <div>
                 <label
-                  for="email"
+                  htmlFor="email"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Email
@@ -77,7 +77,7 @@ function Register() {
               </div>
               <div>
                 <label
-                  for="password"
+                  htmlFor="password"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Password
@@ -96,7 +96,7 @@ function Register() {
               <div>
                 <label
                   for="confPassword"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Confirm Password
                 </label>
@@ -108,6 +108,8 @@ function Register() {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required="true"
 
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required=""
                 />
               {console.log(userData)}
               </div>
