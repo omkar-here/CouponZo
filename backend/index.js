@@ -18,10 +18,11 @@ app.use(
     origin: "http://localhost:5173/",
   })
 );
-app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
+app.use(cookieParser());
+
 app.use("/", userRoutes);
 module.exports = app;
