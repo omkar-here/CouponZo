@@ -3,6 +3,8 @@ import Footer from "../Components/Footer";
 import logo from "../assets/login.png";
 import { useState } from "react";
 import React from "react";
+import axios from "axios";
+
 function Register() {
   const [userData, setUserData] = useState({
     email: "",
@@ -12,27 +14,38 @@ function Register() {
   });
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("http://localhost:3000/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    })
-      // .then(response => response.json({message: "success"}))
-      .then((data) => {
-        // Do something with the response data...
-        console.log(data);
-      })
-      .catch((error) => {
-        // Handle any errors that occurred during the request...
-        console.log(error);
-      });
+    // fetch("http://localhost:3000/register", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   credentials: "include",
+    //   body: JSON.stringify(userData),
+    // })
+    //   // .then(response => response.json({message: "success"}))
+    //   .then((data) => {
+    //     // Do something with the response data...
+    //     console.log(data);
+    //   })
+    //   .catch((error) => {
+    //     // Handle any errors that occurred during the request...
+    //     console.log(error);
+    //   });
     // fetch("http://localhost:3000/clear", {
     //   method: "DELETE",
     // })
     //   .then((data) => console.log(data))
     //   .catch((err) => console.log(err));
+    axios
+      .post("http://localhost:3000/register", userData, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <div className="bg-white relative min-h-screen border-gray-200 dark:bg-gray-900 dark:border-gray-700">
