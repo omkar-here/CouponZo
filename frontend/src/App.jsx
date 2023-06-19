@@ -17,14 +17,16 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 const router = createBrowserRouter(
-  createRoutesFromElements(
-    <>
-      <Route exact path="/" element={<Register />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<RootLayout />}>
-        <Route index element={<Dashboard />} />
-      </Route>
-    </>
+  createRoutesFromElements(<>
+    <Route exact path="/" element={<Register />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/dashboard" element={<RootLayout />}>
+      <Route index element={<Dashboard />} />
+    </Route>
+  </>
+    
+
+
   )
 );
 

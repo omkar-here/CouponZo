@@ -1,16 +1,41 @@
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 import logo from "../assets/login.png";
-import {useState} from 'react';
+import { useState } from "react";
 import React from "react";
 function Register() {
-  const [userData,setUserData]=useState({
-      email: "",
-      userName: "",
-      password: "",
-      companyName: "",
-  })
-  
+  const [userData, setUserData] = useState({
+    email: "",
+    userName: "",
+    password: "",
+    companyName: "",
+  });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch("http://localhost:3000/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "CORS": "*",
+      },
+      credentials: "include",
+      body: JSON.stringify(userData),
+    })
+      // .then(response => response.json({message: "success"}))
+      .then((data) => {
+        // Do something with the response data...
+        console.log(data);
+      })
+      .catch((error) => {
+        // Handle any errors that occurred during the request...
+        console.log(error);
+      });
+    // fetch("http://localhost:3000/clear", {
+    //   method: "DELETE",
+    // })
+    //   .then((data) => console.log(data))
+    //   .catch((err) => console.log(err));
+  };
   return (
     <div className="bg-white relative min-h-screen border-gray-200 dark:bg-gray-900 dark:border-gray-700">
       <Navbar />
@@ -22,7 +47,7 @@ function Register() {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Register for your account
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
                   for="userName"
@@ -36,8 +61,10 @@ function Register() {
                   id="userName"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Name"
-                  required= "true"
-                  onChange={(e)=>{setUserData({...userData,userName:e.target.value})}}
+                  required="true"
+                  onChange={(e) => {
+                    setUserData({ ...userData, userName: e.target.value });
+                  }}
                 />
               </div>
               <div>
@@ -54,10 +81,12 @@ function Register() {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Enter Email"
                   required=""
-                  onChange={(e)=>{setUserData({...userData,email:e.target.value})}}
+                  onChange={(e) => {
+                    setUserData({ ...userData, email: e.target.value });
+                  }}
                 />
               </div>
-            
+
               <div>
                 <label
                   for="companyName"
@@ -72,7 +101,9 @@ function Register() {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Company Name"
                   required=""
-                  onChange={(e)=>{setUserData({...userData,companyName:e.target.value})}}
+                  onChange={(e) => {
+                    setUserData({ ...userData, companyName: e.target.value });
+                  }}
                 />
               </div>
               <div>
@@ -89,8 +120,9 @@ function Register() {
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required="true"
-                  onChange={(e)=>{setUserData({...userData,password:e.target.value})}}
-
+                  onChange={(e) => {
+                    setUserData({ ...userData, password: e.target.value });
+                  }}
                 />
               </div>
               <div>
@@ -107,13 +139,10 @@ function Register() {
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required="true"
-
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required=""
                 />
-              {console.log(userData)}
+                {console.log(userData)}
               </div>
-              
+
               <button
                 type="submit"
                 className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
