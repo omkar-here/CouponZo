@@ -23,10 +23,11 @@ module.exports.register = async (req, res, next) => {
     const token = createToken(user._id);
     console.log("reached here");
     console.log(token);
-    res.cookie("lol", "lol");
+    res.cookie("lol", "lol", {
+      sameSite: true,
+    });
     res.cookie("jwt", token, {
-      // httpOnly: false,
-      // sameSite: false,
+      sameSite: true,
       maxAge: maxAge,
     });
     res.status(201).json({ user: user._id });
