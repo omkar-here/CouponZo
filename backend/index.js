@@ -15,7 +15,7 @@ const MongoStore = require("connect-mongo");
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:5173/",
   })
 );
 app.use(cookieParser());
