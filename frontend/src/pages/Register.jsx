@@ -14,28 +14,7 @@ function Register() {
   });
   const handleSubmit = (e) => {
     e.preventDefault();
-    // fetch("http://localhost:3000/register", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   credentials: "include",
-    //   body: JSON.stringify(userData),
-    // })
-    //   // .then(response => response.json({message: "success"}))
-    //   .then((data) => {
-    //     // Do something with the response data...
-    //     console.log(data);
-    //   })
-    //   .catch((error) => {
-    //     // Handle any errors that occurred during the request...
-    //     console.log(error);
-    //   });
-    // fetch("http://localhost:3000/clear", {
-    //   method: "DELETE",
-    // })
-    //   .then((data) => console.log(data))
-    //   .catch((err) => console.log(err));
+
     axios
       .post("http://localhost:3000/register", userData, {
         withCredentials: true,
@@ -48,9 +27,9 @@ function Register() {
       });
   };
   return (
-    <div className="bg-white relative min-h-screen border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+    <div className="bg-white min-h-screen border-gray-200 dark:bg-gray-900 dark:border-gray-700">
       <Navbar />
-      <div className="flex mt-[30px] flex-row max-w-7xl my-auto h-[70vh] mx-auto items-center justify-center">
+      <div className="flex mt-[30px] flex-row max-w-7xl my-auto min-h-[80vh] mx-auto items-center justify-center">
         <img src={logo} alt="logo" className="mx-auto h-84 w-auto" />
 
         <div className="w-full bg-white  rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
