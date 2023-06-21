@@ -45,9 +45,9 @@ function Register() {
     }
   };
   return (
-    <div className="bg-white relative min-h-screen border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+    <div className="bg-white min-h-screen border-gray-200 dark:bg-gray-900 dark:border-gray-700">
       <Navbar />
-      <div className="flex mt-[30px] flex-row max-w-7xl my-auto h-[70vh] mx-auto items-center justify-center">
+      <div className="flex mt-[30px] flex-row max-w-7xl my-auto min-h-[80vh] mx-auto items-center justify-center">
         <img src={logo} alt="logo" className="mx-auto h-84 w-auto" />
 
         <div className="w-full bg-white  rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
