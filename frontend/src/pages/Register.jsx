@@ -4,48 +4,45 @@ import logo from "../assets/login.png";
 import { useState } from "react";
 import React from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 function Register() {
   const [userData, setUserData] = useState({
     email: "",
     userName: "",
     password: "",
+    confpassword: "",
     companyName: "",
   });
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confPasswordError, setConfPasswordError] = useState("");
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    // fetch("http://localhost:3000/register", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   credentials: "include",
-    //   body: JSON.stringify(userData),
-    // })
-    //   // .then(response => response.json({message: "success"}))
-    //   .then((data) => {
-    //     // Do something with the response data...
-    //     console.log(data);
-    //   })
-    //   .catch((error) => {
-    //     // Handle any errors that occurred during the request...
-    //     console.log(error);
-    //   });
-    // fetch("http://localhost:3000/clear", {
-    //   method: "DELETE",
-    // })
-    //   .then((data) => console.log(data))
-    //   .catch((err) => console.log(err));
-    axios
-      .post("http://localhost:3000/register", userData, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    setEmailError("");
+    setPasswordError("");
+    setConfPasswordError("");
+    if (userData.password != userData.confpassword) {
+      setConfPasswordError("Passwords don't match");
+    } else {
+      axios
+        .post("http://localhost:3000/register", userData, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          const data = res.data;
+          if (data.errors) {
+            setEmailError(data.errors.email);
+            setPasswordError(data.errors.password);
+          } else if (data.user) {
+            navigate("/dashboard");
+          }
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
   return (
     <div className="bg-white relative min-h-screen border-gray-200 dark:bg-gray-900 dark:border-gray-700">
@@ -97,6 +94,7 @@ function Register() {
                   }}
                 />
               </div>
+              <div className="email error">{emailError}</div>
 
               <div>
                 <label
@@ -136,6 +134,8 @@ function Register() {
                   }}
                 />
               </div>
+              <div className="password error">{passwordError}</div>
+
               <div>
                 <label
                   for="confPassword"
@@ -150,8 +150,14 @@ function Register() {
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required="true"
+                  onChange={(e) => {
+                    setUserData({
+                      ...userData,
+                      confpassword: e.target.value,
+                    });
+                  }}
                 />
-                {console.log(userData)}
+                <p>{confPasswordError}</p>
               </div>
 
               <button
