@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import CircularProgressBar from "../Components/CircularProgressBar";
 import { MdAutoGraph } from "react-icons/md";
 import { GoGraph } from "react-icons/go";

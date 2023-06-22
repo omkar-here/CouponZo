@@ -17,11 +17,6 @@ db.once("open", () => {
   console.log("Database Connected");
 });
 
-app.get("/", (req, res) => {
-  res.render("<h1>Hello world</h1>");
-  console.log("request");
-});
-
 app.listen(3000, (req, res) => {
   console.log("Listening to the server");
 });

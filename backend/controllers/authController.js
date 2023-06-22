@@ -23,9 +23,7 @@ module.exports.register = async (req, res) => {
     const token = createToken(user._id);
     console.log("reached here");
     console.log(token);
-    res.cookie("lol", "lol", {
-      sameSite: true,
-    });
+
     res.cookie("jwt", token, {
       sameSite: true,
       maxAge: maxAge,
@@ -40,6 +38,7 @@ module.exports.test = async (req, res, next) => {
   const documents = await User.find();
   res.send(documents);
 };
+
 module.exports.clear = async (req, res, next) => {
   const status = await User.deleteMany();
   console.log("All clear");
