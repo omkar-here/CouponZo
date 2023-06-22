@@ -1,8 +1,32 @@
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 import logo from "../assets/login.png";
-
+import { useState } from "react";
+import {useNavigate} from 'react-router-dom';
+import axios from 'axios'
 function Login() {
+  const [userData, setUserData] = useState({ email: "", password: "" });
+  const handleLogin = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
+  const navigate=useNavigate();
+  const handleSubmit= (e)=>{
+    e.preventDefault();
+    console.log(userData)
+    axios
+      .post("http://localhost:3000/login", userData, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res);
+        // if(res.status==200){
+        //   navigate('/dashboard');
+        // }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   return (
     <div className="bg-white border-gray-200 dark:bg-gray-900 h-full min-h-screen dark:border-gray-700">
       <Navbar />
@@ -14,7 +38,7 @@ function Login() {
             <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Log in to your account
             </h1>
-            <form class="space-y-4 md:space-y-6" action="#">
+            <form class="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
                   for="email"
@@ -28,6 +52,7 @@ function Login() {
                   id="email"
                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
+                  onChange={handleLogin}
                   required=""
                 />
               </div>
@@ -44,6 +69,7 @@ function Login() {
                   id="password"
                   placeholder="••••••••"
                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onChange={handleLogin}
                   required=""
                 />
               </div>
