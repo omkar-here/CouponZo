@@ -5,10 +5,19 @@ import { GoGraph } from "react-icons/go";
 import { VscGraph } from "react-icons/vsc";
 import { BsFillCartFill } from "react-icons/bs";
 import { GiShoppingBag } from "react-icons/gi";
+import NewCoupon from "../Components/modals/NewCoupon";
+import EditCoupon from "../Components/modals/EditCoupon";
 
 export const Dashboard = (props) => {
+  const [showNewCouponModal, setShowNewCouponModal] = useState(false);
+  const [editCoupon, setEditCoupon] = useState(false);
+
   return (
     <div className="flex h-full min-h-screen bg-[#f6f6f9]">
+      {showNewCouponModal && (
+        <NewCoupon onClose={() => setShowNewCouponModal(false)} />
+      )}
+      {editCoupon && <EditCoupon onClose={() => setEditCoupon(false)} />}
       <div className="absolute top-5 right-16">
         <span className="text-sm">
           Hey, <span className="font-bold">Sky</span>
@@ -120,12 +129,14 @@ export const Dashboard = (props) => {
                     <td className="px-6 py-4 text-center">200</td>
                     <td className="px-6 py-4 text-center">2021-10-10</td>
                     <td className="px-6 py-4 text-center">
-                      <a
-                        href="#"
+                      <button
                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        onClick={() => {
+                          setEditCoupon(true);
+                        }}
                       >
                         Edit
-                      </a>
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -154,9 +165,12 @@ export const Dashboard = (props) => {
               </div>
             </div>
             <div className="mt-3 ">
-              <div className="flex border-dashed border-2 rounded-xl border-blue-600 hover:border-blue-400 cursor-pointer hover:text-blue-400 hover:bg-blue-100 font-bold shadow-2xl text-blue-600 flex-col justify-center items-center">
+              <button
+                className="flex w-full border-dashed border-2 rounded-xl border-blue-600 hover:border-blue-400 cursor-pointer hover:text-blue-400 hover:bg-blue-100 font-bold shadow-2xl text-blue-600 flex-col justify-center items-center"
+                onClick={() => setShowNewCouponModal(true)}
+              >
                 <span className="px-8 py-8">Create New Coupon</span>
-              </div>
+              </button>
             </div>
           </div>
         </div>
