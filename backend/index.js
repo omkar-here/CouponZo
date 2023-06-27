@@ -12,7 +12,7 @@ const bodyParser = require("body-parser");
 const userRoutes = require("./routes/User");
 const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
-const couponRoutes = require("./routes/Coupons");
+const couponRoutes = require("./routes/Coupon");
 
 app.use(
   cors({
@@ -27,6 +27,6 @@ app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 
 app.use("/", userRoutes);
-app.use("/coupons");
+app.use("/coupons", couponRoutes);
 
 module.exports = app;
