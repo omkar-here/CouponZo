@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 
-app.use("/", userRoutes);
-app.use("/coupons", couponRoutes);
+// app.use("/", userRoutes);
+app.use("/", couponRoutes);
 
 module.exports = app;

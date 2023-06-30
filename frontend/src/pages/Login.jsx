@@ -19,9 +19,9 @@ function Login() {
       })
       .then((res) => {
         console.log(res);
-        // if(res.status==200){
-        //   navigate('/dashboard');
-        // }
+       if(res.data.user){
+        navigate('/dashboard');
+       }
       })
       .catch((err) => {
         console.log(err);

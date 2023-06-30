@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Orderschema = new mongoose.Schema({
+const OrderSchema = new mongoose.Schema({
   type: {
     type: String,
     enum: ["static", "dynamic"],
@@ -65,7 +65,11 @@ const Orderschema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "Order",
   },
+  coupons: {
+    type: [mongoose.Types.ObjectId], // Assuming your coupon IDs are ObjectIds
+    default: [],
+  },
 });
 
-const Order = new mongoose.model("Order", Orderschema);
-exports.Order = Order;
+exports.model = mongoose.model("Order", OrderSchema);
+

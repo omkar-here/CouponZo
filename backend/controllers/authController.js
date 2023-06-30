@@ -2,7 +2,9 @@ const express = require("express");
 const app = express();
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const maxAge = 1000 * 60 * 60 * 24 * 7;
+const maxAge = 1000 * 60 * 60 * 1;
+
+
 
 const createToken = (id) => {
   //signing the jwt (So this will be unique for every user)
@@ -61,12 +63,14 @@ module.exports.login = async (req, res) => {
   try {
     console.log("request made");
     const { email, password } = req.body;
+    //If the email or password is incorrect it will throw Error(conditions defined in the login method of User Schema)
     const user = await User.login(email, password);
-    if (user) {
-      res.status(200).json({ user: user._id });
-    }
+    const token = createToken(user._id);
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge  });
+    res.status(200).json({ user: user._id });
   } catch (err) {
-    res.status(400).json({});
+    const errors = handleErrors(err);
+    res.status(400).json({ errors });
   }
 };
 
@@ -80,3 +84,8 @@ module.exports.clear = async (req, res, next) => {
   console.log("All clear");
   res.status(200).json();
 };
+
+module.exports.verify=async (req,res)=>{
+  console.log(req.headers);
+  res.send(req.headers);
+}

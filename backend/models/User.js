@@ -36,7 +36,7 @@ const userSchema = new Schema({
     type: Number,
     default: 0,
   },
-  coupon: [
+  orders: [
     {
       type: Schema.Types.ObjectId,
       ref: "Order",
@@ -55,8 +55,8 @@ userSchema.pre("save", async function (next) {
 userSchema.statics.login = async function (email, password) {
   const user = await this.findOne({ email });
   if (user) {
-    const auth = bcrypt.compare(password, user.password);
-    console.log(auth);
+    const auth =await bcrypt.compare(password, user.password);
+    console.log(auth,password);
     if (auth) {
       console.log(user);
       return user;

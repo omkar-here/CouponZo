@@ -43,12 +43,11 @@ const Couponschema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "Order",
   },
-
   expiry: {
     type: Date,
     required: [true, "A expiry date should be mentioned"],
   },
 });
 
-const Coupon = new mongoose.model("Coupon", Couponschema);
+const Coupon = mongoose.model("Coupon", Couponschema);
 module.exports = Coupon;
