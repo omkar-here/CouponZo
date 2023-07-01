@@ -55,22 +55,29 @@ exports.coupon_gen = catchAsync(async (req, res) => {
 
       if (format === "alphanumeric") {
         couponCode = customPrefix
-          ? customPrefix + "-" + uuid().substring(0, length-customPrefix)
+          ? customPrefix +
+            "-" +
+            uuid().substring(0, length - customPrefix.length)
           : uuid().substring(0, length); // Add custom prefix if specified and limit the length of the UUID
       } else if (format === "numeric") {
         let code = Math.floor(Math.random() * Math.pow(10, length)).toString();
         couponCode = customPrefix
-          ? customPrefix + "-" + code.padStart(length-customPrefix, "0")
+          ? customPrefix +
+            "-" +
+            code.padStart(length - customPrefix.length, "0")
           : code.padStart(length, "0"); // Add custom prefix if specified and pad the code with zeros to reach the specified length
       } else if (format === "alphabetic") {
         couponCode = customPrefix
-          ? customPrefix + "-" + generateRandomAlphabetic(length-customPrefix)
+          ? customPrefix +
+            "-" +
+            generateRandomAlphabetic(length - customPrefix.length)
           : generateRandomAlphabetic(length);
       }
 
       coupons.push({
         code: couponCode,
         order: order._id,
+        redemptionLimit: 1,
         user: user._id,
         applicableTo,
         discountType,
@@ -80,15 +87,14 @@ exports.coupon_gen = catchAsync(async (req, res) => {
         conditionsValue,
         expiry,
       });
-
-  
     }
 
     const coupon = await Coupon.insertMany(coupons);
-    
-    order.coupons.push(coupon.map((c) => c._id));
-    await order.save();
 
+    // coupon.map((c) => console.log(typeof c._id));
+
+    order.coupon = coupon.map((c) => c._id);
+    await order.save();
   }
 
   // STATIC starts here -----------------------------
@@ -97,22 +103,25 @@ exports.coupon_gen = catchAsync(async (req, res) => {
 
     if (format === "alphanumeric") {
       couponCode = customPrefix
-        ? customPrefix + "-" + uuid().substring(0, length-customPrefix)
+        ? customPrefix + "-" + uuid().substring(0, length - customPrefix.length)
         : uuid().substring(0, length); // Add custom prefix if specified and limit the length of the UUID
     } else if (format === "numeric") {
       let code = Math.floor(Math.random() * Math.pow(10, length)).toString();
       couponCode = customPrefix
-        ? customPrefix + "-" + code.padStart(length-customPrefix, "0")
+        ? customPrefix + "-" + code.padStart(length - customPrefix.length, "0")
         : code.padStart(length, "0"); // Add custom prefix if specified and pad the code with zeros to reach the specified length
     } else if (format === "alphabetic") {
       couponCode = customPrefix
-        ? customPrefix + "-" + generateRandomAlphabetic(length-customPrefix)
+        ? customPrefix +
+          "-" +
+          generateRandomAlphabetic(length - customPrefix.length)
         : generateRandomAlphabetic(length);
     }
 
     const coupon = await Coupon.create({
       code: couponCode,
       order: order._id,
+      redemptionLimit,
       user: user._id,
       applicableTo,
       discountType,

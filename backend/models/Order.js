@@ -21,10 +21,7 @@ const OrderSchema = new mongoose.Schema({
     enum: ["cart", "sku"],
     required: [true, "A cart or sku should be mentioned"],
   },
-  applicableValue: {
-    type: String,
-    required: [true, "A cart or sku should be mentioned"],
-  },
+
   discountType: {
     type: String,
     enum: ["percentage", "amount"],
@@ -67,9 +64,7 @@ const OrderSchema = new mongoose.Schema({
   },
   coupons: {
     type: [mongoose.Types.ObjectId], // Assuming your coupon IDs are ObjectIds
-    default: [],
   },
 });
 
-exports.model = mongoose.model("Order", OrderSchema);
-
+module.exports = mongoose.model("Order", OrderSchema);
