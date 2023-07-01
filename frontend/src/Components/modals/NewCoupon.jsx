@@ -1,4 +1,25 @@
+import {useState} from 'react'
+
+
 function NewCoupon({ onClose }) {
+  const {couponDetails,setCouponDetails}={
+    numCodes:0,
+    redemptionLimit:0,
+    format:"",
+    customPrefix:"",
+    applicableTo:"",
+    discountType:"",
+    discountValue:0,
+    maxDiscountAmount:0,
+    length:0,
+    type:"",
+    conditions:"",
+    conditionsValue:0,
+    expiry:"",
+  }
+  const handleNewCoupon=(e)=>{
+    setCouponDetails()
+  } 
   return (
     <div className="w-screen z-40 h-screen absolute top-0 left-0 bg-opacity-40 bg-black flex justify-center items-center">
       <div className="max-w-2xl w-full bg-white rounded-lg p-5">

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const Coupon= require("./Coupon");
 const OrderSchema = new mongoose.Schema({
   type: {
     type: String,
@@ -62,8 +62,9 @@ const OrderSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "Order",
   },
-  coupons: {
+  couponList: {
     type: [mongoose.Types.ObjectId], // Assuming your coupon IDs are ObjectIds
+    ref: Coupon
   },
 });
 

@@ -28,9 +28,10 @@ exports.coupon_gen = catchAsync(async (req, res) => {
     expiry,
   } = req.body;
   const user = await User.findById(req.body._id);
-  console.log(user);
-  const order = await Order.create({
-    redemptionLimit,
+  // console.log(user);
+  const order = await Order.create(
+    {
+    type,
     format,
     customPrefix,
     type,
@@ -47,7 +48,7 @@ exports.coupon_gen = catchAsync(async (req, res) => {
   user.orders.push(order._id);
   await user.save();
 
-  let coupons = [];
+  let couponList = [];
 
   if (type == "dynamic") {
     for (let i = 0; i < numCodes; i++) {
@@ -74,11 +75,12 @@ exports.coupon_gen = catchAsync(async (req, res) => {
           : generateRandomAlphabetic(length);
       }
 
-      coupons.push({
+      couponList.push({
+        couponType: type,
         code: couponCode,
-        order: order._id,
+        orderId: order._id,
         redemptionLimit: 1,
-        user: user._id,
+        userId: user._id,
         applicableTo,
         discountType,
         discountValue,
@@ -89,11 +91,12 @@ exports.coupon_gen = catchAsync(async (req, res) => {
       });
     }
 
-    const coupon = await Coupon.insertMany(coupons);
-
+    const coupon = await Coupon.insertMany(couponList);
+    console.log(coupon)
+    console.log(order)
     // coupon.map((c) => console.log(typeof c._id));
 
-    order.coupon = coupon.map((c) => c._id);
+    order.couponList = coupon.map((c) => c._id);
     await order.save();
   }
 
@@ -117,10 +120,23 @@ exports.coupon_gen = catchAsync(async (req, res) => {
           generateRandomAlphabetic(length - customPrefix.length)
         : generateRandomAlphabetic(length);
     }
-
+    couponList.push({
+      couponType: type,
+      code: couponCode,
+      orderId: order._id,
+      redemptionLimit,
+      userId: user._id,
+      applicableTo,
+      discountType,
+      discountValue,
+      maxDiscountAmount,
+      conditions,
+      conditionsValue,
+      expiry,
+    })
     const coupon = await Coupon.create({
       code: couponCode,
-      order: order._id,
+      orderId: order._id,
       redemptionLimit,
       user: user._id,
       applicableTo,
@@ -132,28 +148,44 @@ exports.coupon_gen = catchAsync(async (req, res) => {
       expiry,
     });
 
-    order.coupons.push([coupon._id]);
+    order.couponList.push([coupon._id]);
     await order.save();
-
-    res.status(200).json({
-      status: "success",
-      data: {
-        coupon,
-      },
-    });
   }
+  res.status(200).json({
+    status: "success",
+    data: {
+      couponList,
+      order,
+    },
+  });
 });
 
 // Endpoint for listing coupon codes
 exports.coupon_list = catchAsync(async (req, res) => {
-  const coupons = await Coupon.find({ user: req.params._id });
+  const couponList = await Coupon.find({ user: req.params._id });
   res.status(200).json({
     status: "success",
     data: {
-      coupons,
+      couponList,
+      order,
     },
   });
 });
+
+exports.verifyCoupon = catchAsync(async (req,res) =>{
+  const {purchaseAmount,couponId}=req.body;
+  const coupon= await Coupon.find({code:couponId});
+  const {couponType,applicableTo}=coupon;
+  const deductionAmount=0;
+  if(couponType==='static'){
+    if(applicableTo==='SKU'){
+        
+    }
+  }
+  if(couponType==='dynamic'){
+
+  }
+})
 
 function generateRandomAlphabetic(length) {
   let result = "";

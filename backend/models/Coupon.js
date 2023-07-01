@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const Couponschema = new mongoose.Schema({
+  couponType: {
+    type: String,
+    enum: ["static","dynamic"]
+  },
   code: {
     type: String,
     required: [true, "A coupon should have code"],
@@ -39,9 +43,13 @@ const Couponschema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  OrderId: {
+  orderId: {
     type: mongoose.Schema.ObjectId,
     ref: "Order",
+  },
+  userId: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User"
   },
   expiry: {
     type: Date,
