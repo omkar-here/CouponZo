@@ -6,7 +6,7 @@ function NewCoupon({ onClose }) {
     redemptionLimit: 0,
     format: "",
     customPrefix: "",
-    applicableTo: "",
+    applicableTo: "sku",
     discountType: "percentage",
     discountValue: 0,
     maxDiscountAmount: 0,
@@ -93,6 +93,18 @@ function NewCoupon({ onClose }) {
                   <option value="cart">Cart</option>
                 </select>
               </div>
+              {couponDetails.applicableTo === "sku" ? (
+                <div className="flex flex-col w-full">
+                  <label className="text-black text-md">Product Id:</label>
+                  <input
+                    onChange={handleChange}
+                    type="text"
+                    name="productId"
+                    className="border-1 border-purple-300 w-[90%] bg-blue-200 rounded-lg p-2"
+                  />
+                </div>
+              ) : null}
+
               <div className="flex flex-col w-full">
                 <label className="text-black text-md">Discount Value</label>
                 <input
