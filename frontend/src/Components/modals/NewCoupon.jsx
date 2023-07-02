@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import {useContext} from 'react';
+import { useContext } from "react";
 import { UserContext } from "../ContextAPI/UserContext";
 function NewCoupon({ onClose }) {
   const { loginId, setUserId } = useContext(UserContext);
@@ -22,17 +22,21 @@ function NewCoupon({ onClose }) {
     expiry: "",
   });
 
+  const [showToast, setShowToast] = useState(false);
+
   const handleNewCoupon = (e) => {
     e.preventDefault();
     console.log(couponDetails);
     axios
-      .post(
-        "http://localhost:3000/coupon/coupon-gen",
-        couponDetails,
-        {withCredentials:true}
-      )
+      .post("http://localhost:3000/coupon/coupon-gen", couponDetails, {
+        withCredentials: true,
+      })
       .then((res) => {
         console.log(res);
+        setShowToast(true);
+        setTimeout(() => {
+          setShowToast(false);
+        }, 3000);
       })
       .catch((err) => {
         console.log(err);
@@ -47,6 +51,16 @@ function NewCoupon({ onClose }) {
 
   return (
     <div className="w-screen z-40 h-screen absolute top-0 left-0 bg-opacity-40 bg-black flex justify-center items-center">
+      {/* Toast for coupon creation success */}
+      {showToast ? (
+        <div className="toast toast-end top-10 toast-top">
+          <div className="alert p-5 text-md alert-success">
+            <span>Coupon created successfully 🎉 🎉</span>
+          </div>
+        </div>
+      ) : null}
+
+      {/* ------------------------------ */}
       <div className="max-w-2xl w-full bg-white rounded-lg p-5">
         <h2 className=" text-black font-bold text-2xl">Add Coupon</h2>
         <div className="flex flex-col">
@@ -59,7 +73,6 @@ function NewCoupon({ onClose }) {
                   name="type"
                   required
                   className=" cursor-pointer border-1 w-full border-purple-300 bg-blue-200 rounded-lg p-2"
-                  
                 >
                   <option value="static">Static</option>
                   <option value="dynamic">Dynamic</option>
