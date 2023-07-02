@@ -18,6 +18,7 @@ function Register() {
   const [confPasswordError, setConfPasswordError] = useState("");
   const navigate = useNavigate();
   const handleSubmit = (e) => {
+    console.log(userData)
     e.preventDefault();
     setEmailError("");
     setPasswordError("");

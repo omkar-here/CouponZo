@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import CircularProgressBar from "../Components/CircularProgressBar";
 import { MdAutoGraph } from "react-icons/md";
 import { GoGraph } from "react-icons/go";
@@ -7,10 +7,11 @@ import { BsFillCartFill } from "react-icons/bs";
 import { GiShoppingBag } from "react-icons/gi";
 import NewCoupon from "../Components/modals/NewCoupon";
 import EditCoupon from "../Components/modals/EditCoupon";
-
+import { UserContext } from "../Components/ContextAPI/UserContext";
 export const Dashboard = (props) => {
   const [showNewCouponModal, setShowNewCouponModal] = useState(false);
   const [editCoupon, setEditCoupon] = useState(false);
+  const { userInfo } = useContext(UserContext);
 
   return (
     <div className="flex h-full min-h-screen bg-[#f6f6f9]">
@@ -19,8 +20,8 @@ export const Dashboard = (props) => {
       )}
       {editCoupon && <EditCoupon onClose={() => setEditCoupon(false)} />}
       <div className="absolute top-5 right-16">
-        <span className="text-sm">
-          Hey, <span className="font-bold">Sky</span>
+        <span className=" text-xl">
+          Hey, <span className="font-bold">{userInfo.userName}</span>
         </span>
         <p className="text-right w-full">Admin</p>
       </div>
@@ -80,17 +81,14 @@ export const Dashboard = (props) => {
               </div>
             </div>
             <h3 className="flex font-bold justify-items-start text-2xl mb-5 mt-8">
-              Recent Orders{" "}
+              Recent Orders
             </h3>
 
             <div className="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg">
               <table className="w-full max-w-full text-left text-gray-500 dark:text-gray-400">
                 <thead className=" text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr className="text-sm">
-                    <th
-                      scope="col"
-                      className="px-1 text-center py-3 flex align-text-top "
-                    >
+                    <th scope="col" className="px-1 text-center py-3  ">
                       Order ID
                     </th>
                     <th scope="col" className="px-1 text-center py-3">
@@ -149,16 +147,16 @@ export const Dashboard = (props) => {
               Sales analytics
             </span>
             <div>
-              <div className="flex bg-white font-bold rounded-xl shadow-2xl flex-col justify-center items-center">
-                <span className="px-8 py-8 text-left">
+              <div className="flex bg-white font-bold rounded-xl shadow-2xl flex-col justify-start items-start">
+                <span className=" pl-3  py-6 text-left">
                   <BsFillCartFill className="inline-block mr-2 h-10 w-10 p-2 text-white bg-blue-400 rounded-full" />
                   Static Coupons
                 </span>
               </div>
             </div>
             <div className="mt-3">
-              <div className="flex bg-white font-bold rounded-xl shadow-2xl flex-col justify-center items-center">
-                <span className="px-8 py-8 text-left">
+              <div className="flex bg-white font-bold rounded-xl shadow-2xl flex-col justify-start items-start">
+                <span className=" pl-3 py-6 text-left">
                   <GiShoppingBag className="inline-block mr-2 h-10 w-10 p-2 text-white bg-green-400 rounded-full" />
                   Dynamic Coupons
                 </span>

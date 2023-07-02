@@ -4,13 +4,19 @@ const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const [loginId, setLoginId] = useState(null);
-
+  const [userInfo, setUserInfo] = useState({
+    userName:"",
+    companyName:"",
+    totalCouponsGenerated: 0,
+    totalCouponsUsed: 0,
+    billing:0
+  });
   const setUserId = (id) => {
     setLoginId(id);
   };
 
   return (
-    <UserContext.Provider value={{ loginId, setUserId }}>
+    <UserContext.Provider value={{ loginId, setUserId,userInfo,setUserInfo }}>
       {children}
     </UserContext.Provider>
   );

@@ -10,6 +10,8 @@ const User = require("./../models/User");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+exports.user_info
+
 // Endpoint for generating coupon codes
 exports.coupon_gen = catchAsync(async (req, res) => {
   console.log('request made');

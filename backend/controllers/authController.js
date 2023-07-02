@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const maxAge = 1000 * 60 * 60 * 1;
+const maxAge = 1000 * 60 * 60 * 24*10;
 
 
 
@@ -36,12 +36,12 @@ const handleErrors = (err) => {
 
 module.exports.register = async (req, res) => {
   try {
-    const { email, userName, password, companyType } = req.body;
+    const { email, userName, password, companyName } = req.body;
     const user = await User.create({
       email: email,
       userName: userName,
       password: password,
-      companyType: companyType,
+      companyName: companyName,
     });
     const token = createToken(user._id);
     console.log("reached here");

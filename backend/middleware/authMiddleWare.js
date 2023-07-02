@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const User= require("../models/User");
 const verify = (req, res) => {
   try {
     // console.log(req.cookies)
@@ -6,17 +7,18 @@ const verify = (req, res) => {
 
     //check json web token exists & is verified
     if (token) {
-      jwt.verify(token, "couponzo secret key", (err, decodedToken) => {
+      jwt.verify(token, "couponzo secret key",async (err, decodedToken) => {
         if (err) {
           console.log(err.message);
           console.log("error");
           res.status(401).json({ message: "No cookies" });
         } else {
-          console.log("no cookies");
           console.log(decodedToken);
+          const user= await User.findById(decodedToken.id);  
           decodedToken
-            ? res.json(decodedToken)
+            ? res.json(user)
             : res.json({ message: "No cookies" });
+            
         }
       });
     } else {

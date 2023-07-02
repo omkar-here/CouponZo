@@ -16,24 +16,25 @@ const userSchema = new Schema({
     required: [true, "Please enter a password"],
     minlength: [6, "Minimum password length is 6 characters"],
   },
+  companyName:{
+    type:String,
+    required:true ,
+    default:""
+  },
   userName: {
     type: String,
     required: true,
     unique: false
   },
-  companyType: {
-    type: String,
-    default: "Anonymous",
-  },
-  total_coupon_gen: {
+  totalCouponsGenerated: {
     type: Number,
     default: 0,
   },
-  balance_bill: {
+  billing: {
     type: Number,
     default: 0,
   },
-  coupon_used: {
+  totalCouponsUsed: {
     type: Number,
     default: 0,
   },
