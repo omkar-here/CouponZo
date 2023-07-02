@@ -12,8 +12,12 @@ app.use(bodyParser.json());
 
 // Endpoint for generating coupon codes
 exports.coupon_gen = catchAsync(async (req, res) => {
+  console.log('request made');
   const {
+    userId,
+    type,
     numCodes,
+    length,
     redemptionLimit,
     format,
     customPrefix,
@@ -21,16 +25,13 @@ exports.coupon_gen = catchAsync(async (req, res) => {
     discountType,
     discountValue,
     maxDiscountAmount,
-    length,
-    type,
     conditions,
     conditionsValue,
     expiry,
   } = req.body;
-  const user = await User.findById(req.body._id);
-  // console.log(user);
-  const order = await Order.create(
-    {
+  const user = await User.findById(userId);
+ 
+  const order = await Order.create({
     type,
     format,
     customPrefix,
@@ -45,7 +46,7 @@ exports.coupon_gen = catchAsync(async (req, res) => {
     expiry,
   });
 
-  user.orders.push(order._id);
+  user.orders=order._id;
   await user.save();
 
   let couponList = [];
@@ -92,8 +93,8 @@ exports.coupon_gen = catchAsync(async (req, res) => {
     }
 
     const coupon = await Coupon.insertMany(couponList);
-    console.log(coupon)
-    console.log(order)
+    console.log(coupon);
+    console.log(order);
     // coupon.map((c) => console.log(typeof c._id));
 
     order.couponList = coupon.map((c) => c._id);
@@ -133,7 +134,7 @@ exports.coupon_gen = catchAsync(async (req, res) => {
       conditions,
       conditionsValue,
       expiry,
-    })
+    });
     const coupon = await Coupon.create({
       code: couponCode,
       orderId: order._id,
@@ -172,20 +173,18 @@ exports.coupon_list = catchAsync(async (req, res) => {
   });
 });
 
-exports.verifyCoupon = catchAsync(async (req,res) =>{
-  const {purchaseAmount,couponId}=req.body;
-  const coupon= await Coupon.find({code:couponId});
-  const {couponType,applicableTo}=coupon;
-  const deductionAmount=0;
-  if(couponType==='static'){
-    if(applicableTo==='SKU'){
-        
+exports.verifyCoupon = catchAsync(async (req, res) => {
+  const { purchaseAmount, couponId } = req.body;
+  const coupon = await Coupon.find({ code: couponId });
+  const { couponType, applicableTo } = coupon;
+  const deductionAmount = 0;
+  if (couponType === "static") {
+    if (applicableTo === "SKU") {
     }
   }
-  if(couponType==='dynamic'){
-
+  if (couponType === "dynamic") {
   }
-})
+});
 
 function generateRandomAlphabetic(length) {
   let result = "";

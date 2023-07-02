@@ -27,6 +27,6 @@ app.use(express.static(__dirname + "/public"));
 app.use(cookieParser());
 
 app.use("/", userRoutes);
-// app.use("/", couponRoutes);
+app.use("/coupon", couponRoutes);
 
 module.exports = app;

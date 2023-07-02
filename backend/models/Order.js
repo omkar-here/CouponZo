@@ -8,7 +8,7 @@ const OrderSchema = new mongoose.Schema({
   },
   format: {
     type: String,
-    enum: ["alphanumeric", "alphabetical", "numeric"],
+    enum: ["alphanumeric", "alphabetic", "numeric"],
     required: [true, "Format of the Order should be mentioned"],
   },
 

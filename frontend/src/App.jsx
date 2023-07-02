@@ -14,25 +14,30 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PrivateRoutes from "./Components/ProtectedRoute";
 import { useState } from "react";
-
+import { UserProvider } from "./Components/ContextAPI/UserContext";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route exact path="/" element={<Register />} />
       <Route path="/login" element={<Login />} />
-      <Route element={<PrivateRoutes />}>
+      <Route
+        element={
+          <UserProvider>
+            <PrivateRoutes />
+          </UserProvider>
+        }
+      >
         <Route path="/dashboard" element={<RootLayout />}>
           <Route index element={<Dashboard />} />
         </Route>
       </Route>
-     
     </>
   )
 );
 
 function App() {
   const percentage = 500;
-  const [auth,setAuth]=useState();
+  const [auth, setAuth] = useState();
   return <RouterProvider router={router} />;
 }
 

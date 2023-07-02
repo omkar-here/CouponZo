@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const { isEmail } = require('validator');
 const bcrypt = require("bcrypt");
+const Order=require("../models/Order")
 const userSchema = new Schema({
   email: {
     type: String,
@@ -36,12 +37,13 @@ const userSchema = new Schema({
     type: Number,
     default: 0,
   },
-  orders: [
+  orders: 
     {
       type: Schema.Types.ObjectId,
       ref: "Order",
+    
     },
-  ],
+  
 });
 
 //function to hash the password before saving into db

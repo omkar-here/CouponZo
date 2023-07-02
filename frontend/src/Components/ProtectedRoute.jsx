@@ -1,12 +1,13 @@
 import axios from "axios";
 import React from "react";
-import { useEffect } from "react";
+import { useEffect,useContext } from "react";
 import { Outlet, useNavigate, Navigate} from "react-router-dom";
 import { useState } from "react";
+import { UserContext } from "./ContextAPI/UserContext";
 const PrivateRoutes = () => {
 const [isLoggedIn, setIsLoggedIn] = useState(false);
-const navigate = useNavigate();
-
+const navigate = useNavigate(); 
+const { loginId, setUserId } = useContext(UserContext);
   useEffect(() => {
     axios
       .get("http://localhost:3000/verify",{ withCredentials: true })
@@ -15,11 +16,10 @@ const navigate = useNavigate();
         console.log("hello");
         if (response.data) {
           setIsLoggedIn(true);
+          setUserId(response.data.id);
         } else {
         }
-        // if (!isLoggedIn){
-        //     navigate("/login");
-        // }
+     
       })
       .catch((err) => {
         console.log(err)

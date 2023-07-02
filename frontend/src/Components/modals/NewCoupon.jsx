@@ -1,17 +1,22 @@
 import { useState } from "react";
-
+import axios from "axios";
+import {useContext} from 'react';
+import { UserContext } from "../ContextAPI/UserContext";
 function NewCoupon({ onClose }) {
+  const { loginId, setUserId } = useContext(UserContext);
+
   const [couponDetails, setCouponDetails] = useState({
+    userId: loginId,
     numCodes: 0,
     redemptionLimit: 0,
-    format: "",
+    format: "alphanumeric",
     customPrefix: "",
     applicableTo: "sku",
     discountType: "percentage",
     discountValue: 0,
     maxDiscountAmount: 0,
     length: 0,
-    type: "",
+    type: "static",
     conditions: "none",
     conditionsValue: 0,
     expiry: "",
@@ -20,6 +25,18 @@ function NewCoupon({ onClose }) {
   const handleNewCoupon = (e) => {
     e.preventDefault();
     console.log(couponDetails);
+    axios
+      .post(
+        "http://localhost:3000/coupon/coupon-gen",
+        couponDetails,
+        {withCredentials:true}
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleChange = (e) => {
@@ -40,7 +57,9 @@ function NewCoupon({ onClose }) {
                 <select
                   onChange={handleChange}
                   name="type"
+                  required
                   className=" cursor-pointer border-1 w-full border-purple-300 bg-blue-200 rounded-lg p-2"
+                  
                 >
                   <option value="static">Static</option>
                   <option value="dynamic">Dynamic</option>
@@ -51,6 +70,7 @@ function NewCoupon({ onClose }) {
                 <select
                   name="format"
                   onChange={handleChange}
+                  required
                   className=" cursor-pointer border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
                 >
                   <option value="alphanumeric">alphanumeric</option>
@@ -67,6 +87,7 @@ function NewCoupon({ onClose }) {
                   onChange={handleChange}
                   type="number"
                   name="length"
+                  required
                   className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
                 />
               </div>
@@ -75,6 +96,7 @@ function NewCoupon({ onClose }) {
                 <input
                   onChange={handleChange}
                   type="text"
+                  required
                   name="customPrefix"
                   className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
                 />
@@ -87,6 +109,7 @@ function NewCoupon({ onClose }) {
                 <select
                   onChange={handleChange}
                   name="applicableTo"
+                  required
                   className=" cursor-pointer border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
                 >
                   <option value="sku">SKU</option>
@@ -100,17 +123,26 @@ function NewCoupon({ onClose }) {
                     onChange={handleChange}
                     type="text"
                     name="productId"
+                    required
                     className="border-1 border-purple-300 w-[90%] bg-blue-200 rounded-lg p-2"
                   />
                 </div>
               ) : null}
 
               <div className="flex flex-col w-full">
-                <label className="text-black text-md">Discount Value</label>
+                <label className="text-black text-md">
+                  Discount Value{" "}
+                  {couponDetails.discountType === "percentage" ? (
+                    <span>(%)</span>
+                  ) : (
+                    <span>(in Rs.)</span>
+                  )}
+                </label>
                 <input
                   onChange={handleChange}
                   type="number"
                   name="discountValue"
+                  required
                   className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
                 />
               </div>
@@ -122,6 +154,7 @@ function NewCoupon({ onClose }) {
                 <select
                   onChange={handleChange}
                   name="discountType"
+                  required
                   className=" cursor-pointer border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
                 >
                   <option value="percentage">Percentage</option>
@@ -131,21 +164,31 @@ function NewCoupon({ onClose }) {
 
               {couponDetails.discountType === "percentage" ? (
                 <div className="flex flex-col w-fit">
-                  <label className="text-black text-md">Max Discount</label>
+                  <label className="text-black text-md">
+                    Max Discount (in Rs.){" "}
+                  </label>
                   <input
                     onChange={handleChange}
                     type="number"
                     name="maxDiscountAmount"
+                    required
                     className="border-1 border-purple-300 w-[90%] bg-blue-200 rounded-lg p-2"
                   />
                 </div>
               ) : null}
 
               <div className="flex flex-col w-fit">
-                <label className="text-black text-md">Redemption Limit</label>
+                <label className="text-black text-md">
+                  {couponDetails.type === "static" ? (
+                    <p>Redemption Limit</p>
+                  ) : (
+                    <p>Number of Coupons</p>
+                  )}{" "}
+                </label>
                 <input
                   onChange={handleChange}
                   type="number"
+                  required
                   name={`${
                     couponDetails.type == "static"
                       ? "redemptionLimit"
@@ -163,6 +206,7 @@ function NewCoupon({ onClose }) {
                   onChange={handleChange}
                   type="date"
                   name="expiry"
+                  required
                   className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
                 />
               </div>
@@ -171,6 +215,7 @@ function NewCoupon({ onClose }) {
                 <select
                   onChange={handleChange}
                   name="conditions"
+                  required
                   className=" cursor-pointer border-1 w-full border-purple-300 bg-blue-200 rounded-lg p-2"
                 >
                   <option value="none">None</option>
@@ -184,6 +229,7 @@ function NewCoupon({ onClose }) {
                   <input
                     type="number"
                     onChange={handleChange}
+                    required
                     name="conditionValue"
                     className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
                   />

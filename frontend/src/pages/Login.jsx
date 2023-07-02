@@ -16,7 +16,7 @@ function Login() {
     axios
       .post("http://localhost:3000/login", userData, {
         withCredentials: true,
-      })
+      }) 
       .then((res) => {
         console.log(res);
        if(res.data.user){
