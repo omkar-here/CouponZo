@@ -10,11 +10,11 @@ const User = require("./../models/User");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-exports.user_info
+exports.user_info;
 
 // Endpoint for generating coupon codes
 exports.coupon_gen = catchAsync(async (req, res) => {
-  console.log('request made');
+  console.log("request made");
   const {
     userId,
     type,
@@ -23,6 +23,7 @@ exports.coupon_gen = catchAsync(async (req, res) => {
     redemptionLimit,
     format,
     customPrefix,
+    productId,
     applicableTo,
     discountType,
     discountValue,
@@ -32,7 +33,7 @@ exports.coupon_gen = catchAsync(async (req, res) => {
     expiry,
   } = req.body;
   const user = await User.findById(userId);
- 
+
   const order = await Order.create({
     type,
     format,
@@ -48,7 +49,7 @@ exports.coupon_gen = catchAsync(async (req, res) => {
     expiry,
   });
 
-  user.orders=order._id;
+  user.orders = order._id;
   await user.save();
 
   let couponList = [];
@@ -80,6 +81,7 @@ exports.coupon_gen = catchAsync(async (req, res) => {
 
       couponList.push({
         couponType: type,
+        productId,
         code: couponCode,
         orderId: order._id,
         redemptionLimit: 1,
@@ -128,6 +130,7 @@ exports.coupon_gen = catchAsync(async (req, res) => {
       code: couponCode,
       orderId: order._id,
       redemptionLimit,
+      productId,
       userId: user._id,
       applicableTo,
       discountType,
@@ -137,19 +140,7 @@ exports.coupon_gen = catchAsync(async (req, res) => {
       conditionsValue,
       expiry,
     });
-    const coupon = await Coupon.create({
-      code: couponCode,
-      orderId: order._id,
-      redemptionLimit,
-      user: user._id,
-      applicableTo,
-      discountType,
-      discountValue,
-      maxDiscountAmount,
-      conditions,
-      conditionsValue,
-      expiry,
-    });
+    const coupon = await Coupon.create(couponList[0]);
 
     order.couponList.push([coupon._id]);
     await order.save();

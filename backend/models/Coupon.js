@@ -39,6 +39,9 @@ const Couponschema = new mongoose.Schema({
   conditionValue: {
     type: Number,
   },
+  productId: {
+    type: String,
+  },
   generatedAt: {
     type: Date,
     default: Date.now(),

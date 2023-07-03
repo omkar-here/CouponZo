@@ -3,7 +3,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../ContextAPI/UserContext";
 function NewCoupon({ onClose }) {
-  const { userInfo} = useContext(UserContext);
+  const { userInfo } = useContext(UserContext);
 
   const [couponDetails, setCouponDetails] = useState({
     userId: userInfo._id,
@@ -11,6 +11,7 @@ function NewCoupon({ onClose }) {
     redemptionLimit: 0,
     format: "alphanumeric",
     customPrefix: "",
+    productId: "",
     applicableTo: "sku",
     discountType: "percentage",
     discountValue: 0,
@@ -232,8 +233,8 @@ function NewCoupon({ onClose }) {
                   className=" cursor-pointer border-1 w-full border-purple-300 bg-blue-200 rounded-lg p-2"
                 >
                   <option value="none">None</option>
-                  <option value="minV">Minimum Value</option>
-                  <option value="minQ">Minimum Quantity</option>
+                  <option value="minCartValue">Minimum Value</option>
+                  <option value="minCartQuantity">Minimum Quantity</option>
                 </select>
               </div>
               {couponDetails.conditions != "none" && (
