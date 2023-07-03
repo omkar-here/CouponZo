@@ -5,6 +5,7 @@ const UserContext = createContext();
 const UserProvider = ({ children }) => {
   const [loginId, setLoginId] = useState(null);
   const [userInfo, setUserInfo] = useState({
+    _id:"",
     userName:"",
     companyName:"",
     totalCouponsGenerated: 0,

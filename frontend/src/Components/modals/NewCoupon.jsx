@@ -3,10 +3,10 @@ import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../ContextAPI/UserContext";
 function NewCoupon({ onClose }) {
-  const { loginId, setUserId } = useContext(UserContext);
+  const { userInfo} = useContext(UserContext);
 
   const [couponDetails, setCouponDetails] = useState({
-    userId: loginId,
+    userId: userInfo._id,
     numCodes: 0,
     redemptionLimit: 0,
     format: "alphanumeric",

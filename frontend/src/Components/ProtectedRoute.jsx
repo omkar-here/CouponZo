@@ -17,7 +17,7 @@ const PrivateRoutes = () => {
         // console.log("hello");
         if (response.data) {
           setIsLoggedIn(true);
-          setUserId(response.data.id);
+          setUserId(response.data._id);
           setUserInfo({...response.data});
         }
         console.log(userInfo);
