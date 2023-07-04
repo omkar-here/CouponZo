@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Couponschema = new mongoose.Schema({
   couponType: {
     type: String,
-    enum: ["static","dynamic"]
+    enum: ["static", "dynamic"],
   },
   code: {
     type: String,
@@ -36,7 +36,7 @@ const Couponschema = new mongoose.Schema({
     default: "none",
     required: [true, "A condition should be mentioned"],
   },
-  conditionValue: {
+  conditionsValue: {
     type: Number,
   },
   productId: {
@@ -52,7 +52,7 @@ const Couponschema = new mongoose.Schema({
   },
   userId: {
     type: mongoose.Schema.ObjectId,
-    ref: "User"
+    ref: "User",
   },
   expiry: {
     type: Date,

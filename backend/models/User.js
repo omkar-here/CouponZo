@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { isEmail } = require('validator');
+const { isEmail } = require("validator");
 const bcrypt = require("bcrypt");
-const Order=require("../models/Order")
+const Order = require("../models/Order");
 const userSchema = new Schema({
   email: {
     type: String,
@@ -16,15 +16,15 @@ const userSchema = new Schema({
     required: [true, "Please enter a password"],
     minlength: [6, "Minimum password length is 6 characters"],
   },
-  companyName:{
-    type:String,
-    required:true ,
-    default:""
+  companyName: {
+    type: String,
+    required: true,
+    default: "",
   },
   userName: {
     type: String,
     required: true,
-    unique: false
+    unique: false,
   },
   totalCouponsGenerated: {
     type: Number,
@@ -38,13 +38,10 @@ const userSchema = new Schema({
     type: Number,
     default: 0,
   },
-  orders: 
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Order",
-    
-    },
-  
+  orders: {
+    type: Schema.Types.ObjectId,
+    ref: "Order",
+  },
 });
 
 //function to hash the password before saving into db
@@ -58,8 +55,8 @@ userSchema.pre("save", async function (next) {
 userSchema.statics.login = async function (email, password) {
   const user = await this.findOne({ email });
   if (user) {
-    const auth =await bcrypt.compare(password, user.password);
-    console.log(auth,password);
+    const auth = await bcrypt.compare(password, user.password);
+    console.log(auth, password);
     if (auth) {
       console.log(user);
       return user;
@@ -69,4 +66,5 @@ userSchema.statics.login = async function (email, password) {
   throw Error("incorrect email");
 };
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+module.exports = User;

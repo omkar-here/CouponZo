@@ -1,23 +1,41 @@
+const mongoose = require("mongoose");
 const Coupon = require("../models/Coupon");
 const User = require("../models/User");
 
 exports.verifyCoupon = async (req, res) => {
-  const { userId, couponCode, quantity, totalAmount, productIdList } = req.body;
-  console.log(userId, couponCode, quantity, totalAmount, productIdList);
-  const user = await User.find({ _id: userId });
+  let { userId, couponCode, quantity, totalAmount, productIdList } = req.body;
+
+  quantity = parseInt(quantity);
+  totalAmount = parseInt(totalAmount);
+
+  const user = await User.findById(userId);
+  console.log(user);
+
   let finalAmount = totalAmount;
 
   try {
     if (user) {
       const coupon = await Coupon.findOne({ code: couponCode });
+      console.log(coupon);
 
-      if (userId === coupon.userId) {
+      if (userId === coupon.userId._id.toString()) {
         // CART
+
+        console.log("CART");
         if (coupon.applicableTo === "cart") {
           if (coupon.discountType === "amount") {
-            applyAmountDiscount(coupon, totalAmount, quantity);
+            finalAmount = await applyAmountDiscount(
+              coupon,
+              totalAmount,
+              quantity
+            );
           } else if (coupon.discountType === "percentage") {
-            applyPercentageDiscount(coupon, totalAmount, quantity);
+            console.log("PERCENTAGE");
+            finalAmount = applyPercentageDiscount(
+              coupon,
+              totalAmount,
+              quantity
+            );
           } else {
             res.status(400).json({ message: "Coupon not valid for this cart" });
           }
@@ -25,11 +43,16 @@ exports.verifyCoupon = async (req, res) => {
 
         // SKU
         else if (coupon.applicableTo === "sku") {
+          console.log("SKU");
           if (productIdList.includes(coupon.productId)) {
             if (coupon.discountType === "amount") {
-              applyAmountDiscount(coupon, totalAmount, quantity);
+              finalAmount = applyAmountDiscount(coupon, totalAmount, quantity);
             } else if (coupon.discountType === "percentage") {
-              applyPercentageDiscount(coupon, totalAmount, quantity);
+              finalAmount = applyPercentageDiscount(
+                coupon,
+                totalAmount,
+                quantity
+              );
             }
           } else {
             res.json({ message: "Coupon not valid for this SKU" });
@@ -37,11 +60,14 @@ exports.verifyCoupon = async (req, res) => {
         }
       }
 
+      if (finalAmount > coupon.maxDiscountAmount)
+        finalAmount = totalAmount - coupon.maxDiscountAmount;
+
       res.status(200).json({
         status: "success",
         message: "Coupon applied successfully",
         data: {
-          finalAmount,
+          finalAmount: finalAmount,
         },
       });
     } else {
@@ -52,32 +78,40 @@ exports.verifyCoupon = async (req, res) => {
   }
 };
 
-async function applyAmountDiscount(coupon, totalAmount, quantity) {
+function applyAmountDiscount(coupon, totalAmount, quantity) {
   if (coupon.conditions === "none") {
-    finalAmount = totalAmount - coupon.discountValue;
+    console.log(coupon.discountValue, totalAmount);
+    return totalAmount - coupon.discountValue;
   } else if (coupon.conditions === "minCartValue") {
-    if (totalAmount >= coupon.conditionValue) {
-      finalAmount = totalAmount - coupon.discountValue;
+    console.log(coupon.discountValue, totalAmount);
+    if (totalAmount >= coupon.conditionsValue) {
+      return totalAmount - coupon.discountValue;
     }
   } else if (coupon.conditions === "minCartQuantity") {
-    if (quantity >= coupon.conditionValue) {
-      finalAmount = totalAmount - coupon.discountValue;
+    if (quantity >= coupon.conditionsValue) {
+      console.log(coupon.discountValue, totalAmount);
+      return totalAmount - coupon.discountValue;
     }
   } else {
     res.status(400).json({ message: "Coupon conditions not met" });
   }
 }
 
-async function applyPercentageDiscount(coupon, totalAmount, quantity) {
+function applyPercentageDiscount(coupon, totalAmount, quantity) {
   if (coupon.conditions === "none") {
-    finalAmount = totalAmount - (totalAmount * coupon.discountValue) / 100;
+    console.log(coupon.discountValue, totalAmount, "h");
+    return totalAmount - (totalAmount * coupon.discountValue) / 100;
   } else if (coupon.conditions === "minCartValue") {
-    if (totalAmount >= coupon.conditionValue) {
-      finalAmount = totalAmount - (totalAmount * coupon.discountValue) / 100;
+    console.log(coupon.conditionsValue, totalAmount, "y");
+    if (totalAmount >= coupon.conditionsValue) {
+      console.log(coupon.discountValue, totalAmount, "x");
+      return totalAmount - (totalAmount * coupon.discountValue) / 100;
     }
   } else if (coupon.conditions === "minCartQuantity") {
-    if (quantity >= coupon.conditionValue) {
-      finalAmount = totalAmount - (totalAmount * coupon.discountValue) / 100;
+    console.log(quantity, coupon.conditionsValue, "a");
+    if (quantity >= coupon.conditionsValue) {
+      console.log(coupon.discountValue, totalAmount, "z");
+      return totalAmount - (totalAmount * coupon.discountValue) / 100;
     }
   } else {
     res.status(400).json({ message: "Coupon conditions not met" });

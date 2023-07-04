@@ -161,7 +161,6 @@ exports.coupon_list = catchAsync(async (req, res) => {
     status: "success",
     data: {
       couponList,
-      order,
     },
   });
 });
