@@ -1,5 +1,4 @@
-# CouponZo
-# Promotion_Engine
+# CouponZo (Promotion_Engine)
 > We have made a dummy site for testing our headless Promotion engine for generating Coupons for promoting sales on other platforms by integrating our API's with them.
 
 Link to the [Pizza Site](https://github.com/omkar-here/Pizza-Site) we made
