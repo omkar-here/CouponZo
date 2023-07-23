@@ -18,17 +18,16 @@ exports.verifyCoupon = async (req, res) => {
       const coupon = await Coupon.findOne({ code: couponCode });
       console.log(coupon);
 
-      if (userId === coupon.userId._id.toString()) {
+      if (
+        userId === coupon.userId._id.toString() &&
+        coupon.redemptionLimit > 0
+      ) {
         // CART
 
         console.log("CART");
         if (coupon.applicableTo === "cart") {
           if (coupon.discountType === "amount") {
-            finalAmount = await applyAmountDiscount(
-              coupon,
-              totalAmount,
-              quantity
-            );
+            finalAmount = applyAmountDiscount(coupon, totalAmount, quantity);
           } else if (coupon.discountType === "percentage") {
             console.log("PERCENTAGE");
             finalAmount = applyPercentageDiscount(
@@ -36,6 +35,9 @@ exports.verifyCoupon = async (req, res) => {
               totalAmount,
               quantity
             );
+
+            coupon.redemptionLimit = coupon.redemptionLimit - 1;
+            await coupon.save();
           } else {
             res.status(400).json({ message: "Coupon not valid for this cart" });
           }
@@ -54,6 +56,9 @@ exports.verifyCoupon = async (req, res) => {
                 quantity
               );
             }
+
+            coupon.redemptionLimit = coupon.redemptionLimit - 1;
+            await coupon.save();
           } else {
             res.json({ message: "Coupon not valid for this SKU" });
           }
