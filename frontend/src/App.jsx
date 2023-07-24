@@ -15,6 +15,7 @@ import Register from "./pages/Register";
 import PrivateRoutes from "./Components/ProtectedRoute";
 import { useState } from "react";
 import { UserProvider } from "./Components/ContextAPI/UserContext";
+import OrdersPage from "./pages/OrdersPage";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -29,6 +30,9 @@ const router = createBrowserRouter(
       >
         <Route path="/dashboard" element={<RootLayout />}>
           <Route index element={<Dashboard />} />
+        </Route>
+        <Route path="/orders" element={<RootLayout />}>
+          <Route index element={<OrdersPage />} />
         </Route>
       </Route>
     </>
