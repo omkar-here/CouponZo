@@ -26,6 +26,7 @@ function Register() {
     if (userData.password != userData.confpassword) {
       setConfPasswordError("Passwords don't match");
     } else {
+      console.log("here")
       axios
         .post("http://localhost:3000/register", userData, {
           withCredentials: true,
