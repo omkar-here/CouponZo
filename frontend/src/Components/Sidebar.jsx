@@ -1,5 +1,6 @@
 import logo from "../assets/logo.png";
 import { BiLogOut } from "react-icons/bi";
+import { Link } from "react-router-dom";
 
 function Sidebar() {
   return (
@@ -42,8 +43,8 @@ function Sidebar() {
           </a>
           <ul className="space-y-2 mt-20 font-medium">
             <li>
-              <a
-                href="#"
+              <Link
+                to="/dashboard"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <svg
@@ -57,11 +58,11 @@ function Sidebar() {
                   <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
                 </svg>
                 <span className="ml-3 text-xl">Dashboard</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
+              <Link
+                to="/orders"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <svg
@@ -76,7 +77,7 @@ function Sidebar() {
                 <span className="flex-1 ml-3 whitespace-nowrap  text-xl">
                   Orders
                 </span>
-              </a>
+              </Link>
             </li>
 
             <li>
