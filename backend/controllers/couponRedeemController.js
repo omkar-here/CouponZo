@@ -5,8 +5,13 @@ exports.confirmCoupon = async (req, res) => {
   let { couponCode, totalAmount } = req.body;
   if (couponCode != null) {
     try {
-      const coupon = await Coupon.findOne(couponCode);
+      const coupon = await Coupon.findOne({ code: couponCode });
+      if (coupon.redemptionLimit === 0) {
+        res.json({ message: "Coupon limit exceeded" }).status(400);
+      }
       coupon.redemptionLimit -= 1;
+      await coupon.save();
+
       res.json({ message: "Coupon redeemed successfully" }).status(200);
     } catch (error) {
       console.log(error);
