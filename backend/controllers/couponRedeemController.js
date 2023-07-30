@@ -29,6 +29,7 @@ exports.verifyCoupon = async (req, res) => {
   try {
     if (user) {
       const coupon = await Coupon.findOne({ code: couponCode });
+
       console.log(coupon);
       if (coupon) {
         if (userId === coupon.userId._id.toString()) {
@@ -43,6 +44,8 @@ exports.verifyCoupon = async (req, res) => {
                 totalAmount,
                 quantity
               );
+              coupon.redemptionLimit = coupon.redemptionLimit - 1;
+              await coupon.save();
             } else if (coupon.discountType === "percentage") {
               console.log("PERCENTAGE");
               finalAmount = applyPercentageDiscount(
@@ -51,6 +54,8 @@ exports.verifyCoupon = async (req, res) => {
                 totalAmount,
                 quantity
               );
+              coupon.redemptionLimit = coupon.redemptionLimit - 1;
+              await coupon.save();
             } else {
               res
                 .status(400)
@@ -69,6 +74,8 @@ exports.verifyCoupon = async (req, res) => {
                   totalAmount,
                   quantity
                 );
+                coupon.redemptionLimit = coupon.redemptionLimit - 1;
+                await coupon.save();
               } else if (coupon.discountType === "percentage") {
                 finalAmount = applyPercentageDiscount(
                   res,
@@ -76,6 +83,8 @@ exports.verifyCoupon = async (req, res) => {
                   totalAmount,
                   quantity
                 );
+                coupon.redemptionLimit = coupon.redemptionLimit - 1;
+                await coupon.save();
               }
             } else {
               res.json({ message: "Coupon not valid for this SKU" });
@@ -86,9 +95,9 @@ exports.verifyCoupon = async (req, res) => {
         res.status(401).json({ message: "Not a Valid Coupon Code" });
       }
 
-      if (finalAmount > coupon.maxDiscountAmount)
-        finalAmount = totalAmount - coupon.maxDiscountAmount;
-
+      // if (finalAmount > coupon.maxDiscountAmount)
+      //   finalAmount = totalAmount - coupon.maxDiscountAmount;
+      console.log(finalAmount);
       res.status(200).json({
         status: "success",
         message: "Coupon applied successfully",
