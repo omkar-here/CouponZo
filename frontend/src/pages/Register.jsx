@@ -29,7 +29,6 @@ function Register() {
       console.log("here")
       axios
         .post("http://localhost:3000/register", userData, {
-          withCredentials: true,
         })
         .then((res) => {
           const data = res.data;

@@ -70,6 +70,7 @@ module.exports.login = async (req, res) => {
     res.status(200).json({ user: user._id });
   } catch (err) {
     const errors = handleErrors(err);
+    
     res.status(400).json({ errors });
   }
 };
