@@ -6,13 +6,14 @@ exports.confirmCoupon = async (req, res) => {
   if (couponCode != null) {
     try {
       const coupon = await Coupon.findOne({ code: couponCode });
-      if (coupon.redemptionLimit === 0) {
+
+      if (coupon.redemptionLimit > 0) {
+        coupon.redemptionLimit -= 1;
+        await coupon.save();
+        res.json({ message: "Coupon redeemed successfully" }).status(200);
+      } else {
         res.json({ message: "Coupon limit exceeded" }).status(400);
       }
-      coupon.redemptionLimit -= 1;
-      await coupon.save();
-
-      res.json({ message: "Coupon redeemed successfully" }).status(200);
     } catch (error) {
       console.log(error);
     }
@@ -20,9 +21,17 @@ exports.confirmCoupon = async (req, res) => {
     res.json({ finalAmount: totalAmount });
   }
 };
+exports.setRedemptionLimit = async (req, res) => {
+  console.log("Redmemtion");
+  let { couponCode, totalAmount } = req.body;
+  const coupon = await Coupon.findOne({ code: couponCode });
+  console.log(coupon);
+  coupon.redemptionLimit = 4;
+  await coupon.save();
+  res.json({ message: "Redemption Limit set successfully" }).status(200);
+};
 exports.verifyCoupon = async (req, res) => {
   let { userId, couponCode, quantity, totalAmount, productIdList } = req.body;
-  console.log("Helo");
   quantity = parseInt(quantity);
   totalAmount = parseInt(totalAmount);
   console.log(userId, couponCode, quantity, totalAmount, productIdList);
@@ -36,42 +45,17 @@ exports.verifyCoupon = async (req, res) => {
       const coupon = await Coupon.findOne({ code: couponCode });
 
       console.log(coupon);
+
       if (coupon) {
-        if (userId === coupon.userId._id.toString()) {
+        console.log(userId);
+        console.log(coupon.userId.toString());
+
+        if (userId === coupon.userId.toString()) {
           // CART
 
           console.log("CART");
-          if (coupon.applicableTo === "cart") {
-            if (coupon.discountType === "amount") {
-              finalAmount = applyAmountDiscount(
-                res,
-                coupon,
-                totalAmount,
-                quantity
-              );
-              coupon.redemptionLimit = coupon.redemptionLimit - 1;
-              await coupon.save();
-            } else if (coupon.discountType === "percentage") {
-              console.log("PERCENTAGE");
-              finalAmount = applyPercentageDiscount(
-                res,
-                coupon,
-                totalAmount,
-                quantity
-              );
-              coupon.redemptionLimit = coupon.redemptionLimit - 1;
-              await coupon.save();
-            } else {
-              res
-                .status(400)
-                .json({ message: "ApplicableTo not specified correctly" });
-            }
-          }
-
-          // SKU
-          else if (coupon.applicableTo === "sku") {
-            console.log("SKU");
-            if (productIdList.includes(coupon.productId)) {
+          if (coupon.redemptionLimit > 0) {
+            if (coupon.applicableTo === "cart") {
               if (coupon.discountType === "amount") {
                 finalAmount = applyAmountDiscount(
                   res,
@@ -79,29 +63,51 @@ exports.verifyCoupon = async (req, res) => {
                   totalAmount,
                   quantity
                 );
-                coupon.redemptionLimit = coupon.redemptionLimit - 1;
-                await coupon.save();
               } else if (coupon.discountType === "percentage") {
+                console.log("PERCENTAGE");
                 finalAmount = applyPercentageDiscount(
                   res,
                   coupon,
                   totalAmount,
                   quantity
                 );
-                coupon.redemptionLimit = coupon.redemptionLimit - 1;
-                await coupon.save();
+              } else {
+                res
+                  .status(400)
+                  .json({ message: "ApplicableTo not specified correctly" });
               }
-            } else {
-              res.json({ message: "Coupon not valid for this SKU" });
+            }
+
+            // SKU
+            else if (coupon.applicableTo === "sku") {
+              console.log("SKU");
+              if (productIdList.includes(coupon.productId)) {
+                if (coupon.discountType === "amount") {
+                  finalAmount = applyAmountDiscount(
+                    res,
+                    coupon,
+                    totalAmount,
+                    quantity
+                  );
+                } else if (coupon.discountType === "percentage") {
+                  finalAmount = applyPercentageDiscount(
+                    res,
+                    coupon,
+                    totalAmount,
+                    quantity
+                  );
+                }
+              } else {
+                res.json({ message: "Coupon not valid for this SKU" });
+              }
             }
           }
         }
       } else {
+        console.log("Escape");
         res.status(401).json({ message: "Not a Valid Coupon Code" });
       }
 
-      // if (finalAmount > coupon.maxDiscountAmount)
-      //   finalAmount = totalAmount - coupon.maxDiscountAmount;
       console.log(finalAmount);
       res.status(200).json({
         status: "success",

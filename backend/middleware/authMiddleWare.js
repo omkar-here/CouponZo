@@ -18,7 +18,6 @@ const verify = (req, res) => {
           decodedToken
             ? res.json(user)
             : res.json({ message: "No cookies" });
-            
         }
       });
     } else {

@@ -165,19 +165,6 @@ exports.coupon_list = catchAsync(async (req, res) => {
   });
 });
 
-exports.verifyCoupon = catchAsync(async (req, res) => {
-  const { purchaseAmount, couponId } = req.body;
-  const coupon = await Coupon.find({ code: couponId });
-  const { couponType, applicableTo } = coupon;
-  const deductionAmount = 0;
-  if (couponType === "static") {
-    if (applicableTo === "SKU") {
-    }
-  }
-  if (couponType === "dynamic") {
-  }
-});
-
 function generateRandomAlphabetic(length) {
   let result = "";
   const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
