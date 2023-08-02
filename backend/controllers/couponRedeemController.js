@@ -7,7 +7,7 @@ exports.confirmCoupon = async (req, res) => {
     try {
       const coupon = await Coupon.findOne({ code: couponCode });
 
-      if (coupon.redemptionLimit > 0) {
+      if (coupon.redemptionLimit > 0 && coupon.expiry > Date.now()) {
         coupon.redemptionLimit -= 1;
         await coupon.save();
         res.json({ message: "Coupon redeemed successfully" }).status(200);
@@ -54,7 +54,7 @@ exports.verifyCoupon = async (req, res) => {
           // CART
 
           console.log("CART");
-          if (coupon.redemptionLimit > 0) {
+          if (coupon.redemptionLimit > 0 && coupon.expiry > Date.now()) {
             if (coupon.applicableTo === "cart") {
               if (coupon.discountType === "amount") {
                 finalAmount = applyAmountDiscount(
