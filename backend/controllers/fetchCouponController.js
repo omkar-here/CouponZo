@@ -2,19 +2,25 @@ const Order = require("../models/Order");
 const Coupon = require("../models/Coupon");
 
 const getCouponList = async (req, res) => {
+  console.log(req.params);
+  const { orderId } = req.query;
+
   try {
-    const order = await Order.findOne({ _id: "64badd810401da3b3f21ed35" }); // Assuming you want to get multiple orders
+    console.log(orderId);
+    const order = await Order.findById(orderId); // Assuming you want to get multiple orders
+    console.log(order);
     const couponCodesList = order.couponList.map((coupon) => {
-        console.log(coupon);
-        return coupon;
+      console.log(coupon);
+      return coupon;
     });
     console.log(couponCodesList);
     // Use Promise.all to fetch coupons for all the coupon codes in parallel
     const couponList = await Promise.all(
       couponCodesList.map(async (couponCode) => {
         console.log(couponCode.toHexString());
+
         const coupon = await Coupon.findById(couponCode.toHexString());
-        console.log(coupon);    
+        console.log(coupon);
         return coupon;
       })
     );

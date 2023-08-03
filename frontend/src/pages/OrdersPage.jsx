@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
-import { Accordion, Card, Button } from "react-bootstrap";
-
 import axios from "axios";
-import CollapseAll from "../Components/Accordian";
+
 function OrdersPage() {
   const random = {
     type: "dynamic",
@@ -25,6 +23,7 @@ function OrdersPage() {
     ],
   };
   const [orderList, setOrderList] = useState([{}]);
+
   useEffect(() => {
     console.log("entered");
 
@@ -38,6 +37,37 @@ function OrdersPage() {
       );
     });
   }, []);
+
+  const fetchOrderCoupons = (order) => {
+    axios
+      .get("http://localhost:3000/coupon/fetchCoupons", {
+        params: {
+          orderId: order,
+        },
+      })
+      .then((orderCoupons) => {
+        console.log(orderCoupons);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const toggleAccordion = (index) => {
+    console.log(orderList[index]._id);
+    fetchOrderCoupons(orderList[index]._id);
+    setOrderList((prevOrderList) => {
+      const updatedOrderList = prevOrderList.map((order, i) => {
+        if (i === index) {
+          return { ...order, open: !order.open };
+        } else {
+          return order;
+        }
+      });
+      return updatedOrderList;
+    });
+  };
+
   return (
     <div className="w-[90%] mx-auto min-h-screen">
       <Accordion>
@@ -148,42 +178,92 @@ function OrdersPage() {
         
             {orderList.map((order, key) => {
               return (
-                <tr
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                  key={key}
-                >
-                  {/* <td className="px-6 py-4 text-center">
-                {order.couponList.length}
-              </td> */}
+                <React.Fragment key={key}>
+                  <tr
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                    key={key}
+                    onClick={() => toggleAccordion(key)}
+                  >
+                    <td className="px-6 py-4 text-center">{order.type}</td>
+                    <td className="px-6 py-4 text-center">ORDER NAME</td>
 
-                  <td className="px-6 py-4 text-center">{order.type}</td>
-                  <td className="px-6 py-4 text-center">ORDER NAME</td>
-
-                  <td className="px-6 py-4 text-center">
-                    {order.customPrefix}
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    {order.couponList?.length}
-                  </td>
-                  <td className="px-6 py-4 text-center">{order.format}</td>
-                  <td className="px-6 py-4 text-center">
-                    {order.discountType}
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    {order.discountValue}
-                  </td>
-                  <td className="px-6 py-4 text-center">{order.expiry}</td>
-                  <td className="px-6 py-4 text-center">
-                    <button
-                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      onClick={() => {
-                        setEditCoupon(true);
-                      }}
-                    >
-                      Edit
-                    </button>
-                  </td>
-                </tr>
+                    <td className="px-6 py-4 text-center">
+                      {order.customPrefix}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      {order.couponList?.length}
+                    </td>
+                    <td className="px-6 py-4 text-center">{order.format}</td>
+                    <td className="px-6 py-4 text-center">
+                      {order.discountType}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      {order.discountValue}
+                    </td>
+                    <td className="px-6 py-4 text-center">{order.expiry}</td>
+                    <td className="px-6 py-4 text-center">
+                      <button
+                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        onClick={() => {
+                          setEditCoupon(true);
+                        }}
+                      >
+                        <svg
+                          data-accordion-icon
+                          className="w-3 h-3 rotate-180 shrink-0"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 10 6"
+                        >
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 5 5 1 1 5"
+                          />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr className="w-full">
+                    {order.open && (
+                      <td colSpan={8}>
+                        <table className="w-full text-gray-500 dark:text-gray-400">
+                          <thead className="w-full text-gray-500 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr className="text-sm w-full">
+                              <th scope="col" className="px-1 text-center py-3">
+                                Coupon Code
+                              </th>
+                              <th
+                                scope="col"
+                                className="px-1 text-center py-3  "
+                              >
+                                Coupon Status
+                              </th>
+                              <th scope="col" className="px-1 text-center py-3">
+                                Coupon Value
+                              </th>
+                              <th scope="col" className="px-1 text-center py-3">
+                                Expiry
+                              </th>
+                              <th scope="col" className="px-1 text-center py-3">
+                                Conditions
+                              </th>
+                              <th scope="col" className="px-1 text-center py-3">
+                                Condition value
+                              </th>
+                              <th scope="col" className="px-1 text-center py-3">
+                                Product Id
+                              </th>
+                            </tr>
+                          </thead>
+                        </table>
+                      </td>
+                    )}
+                  </tr>
+                </React.Fragment>
               );
             })}
           </tbody>
