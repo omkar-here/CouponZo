@@ -142,6 +142,8 @@ export const Dashboard = (props) => {
             </div>
           </div>
 
+                        
+
           <div className="w-1/5 ml-5">
             <span className="flex font-bold justify-items-start text-xl mb-5 mt-8">
               Sales analytics
