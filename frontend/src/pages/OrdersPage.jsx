@@ -1,35 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
 import React from "react";
 import axios from "axios";
 
 function OrdersPage() {
-  const random = {
-    type: "dynamic",
-    format: "alphanumeric",
-    customPrefix: "BIGSALE",
-    applicableTo: "cart",
-    discountType: "percentage",
-    discountValue: 20,
-    maxDiscountAmount: 10000,
-    length: 10,
-    conditions: "none",
-    expiry: {
-      $date: "2023-07-28T00:00:00.000Z",
-    },
-    couponList: [
-      {
-        $oid: "64badd820401da3b3f21ed38",
-      },
-    ],
-  };
   const [orderList, setOrderList] = useState([{}]);
 
   useEffect(() => {
     console.log("entered");
 
     axios.get("http://localhost:3000/coupon/fetchOrders").then((orderList) => {
-      console.log(orderList);
-
       setOrderList(
         orderList.data.filter((order) => {
           return order.customPrefix != "ABC";
@@ -38,15 +18,30 @@ function OrdersPage() {
     });
   }, []);
 
-  const fetchOrderCoupons = (order) => {
+  const fetchOrderCoupons = (orderId, index) => {
+    // Modified the function parameters
     axios
       .get("http://localhost:3000/coupon/fetchCoupons", {
         params: {
-          orderId: order,
+          orderId: orderId,
         },
       })
       .then((orderCoupons) => {
-        console.log(orderCoupons);
+        // Once the data is fetched, update the orderList state with the new data
+        console.log(orderCoupons.data);
+        setOrderList((prevOrderList) => {
+          const updatedOrderList = prevOrderList.map((order, i) => {
+            if (i === index) {
+              return {
+                ...order,
+                coupons: orderCoupons.data,
+              };
+            } else {
+              return order;
+            }
+          });
+          return updatedOrderList;
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -55,7 +50,7 @@ function OrdersPage() {
 
   const toggleAccordion = (index) => {
     console.log(orderList[index]._id);
-    fetchOrderCoupons(orderList[index]._id);
+    fetchOrderCoupons(orderList[index]._id, index);
     setOrderList((prevOrderList) => {
       const updatedOrderList = prevOrderList.map((order, i) => {
         if (i === index) {
@@ -70,32 +65,6 @@ function OrdersPage() {
 
   return (
     <div className="w-[90%] mx-auto min-h-screen">
-      <Accordion>
-      <Accordion.Item eventKey="0">
-        <Accordion.Header>Accordion Item #1</Accordion.Header>
-        <Accordion.Body>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </Accordion.Body>
-      </Accordion.Item>
-      <Accordion.Item eventKey="1">
-        <Accordion.Header>Accordion Item #2</Accordion.Header>
-        <Accordion.Body>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </Accordion.Body>
-      </Accordion.Item>
-    </Accordion>
       <div
         id="dropdown"
         className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
@@ -174,8 +143,7 @@ function OrdersPage() {
             </tr>
           </thead>
           <tbody>
-            {/* <CollapseAll /> */}
-        
+            
             {orderList.map((order, key) => {
               return (
                 <React.Fragment key={key}>
@@ -259,6 +227,54 @@ function OrdersPage() {
                               </th>
                             </tr>
                           </thead>
+                          {order.coupons?.map((coupon, key) => {
+                            return (
+                              <tr key={key}>
+                                <td
+                                  scope="col"
+                                  className="px-1 text-center py-3"
+                                >
+                                  {coupon.code}
+                                </td>
+                                <td
+                                  scope="col"
+                                  className="px-1 text-center py-3  "
+                                >
+                                  Coupon Status
+                                </td>
+                                <td
+                                  scope="col"
+                                  className="px-1 text-center py-3"
+                                >
+                                  Coupon Value
+                                </td>
+                                <td
+                                  scope="col"
+                                  className="px-1 text-center py-3"
+                                >
+                                  Expiry
+                                </td>
+                                <td
+                                  scope="col"
+                                  className="px-1 text-center py-3"
+                                >
+                                  Conditions
+                                </td>
+                                <td
+                                  scope="col"
+                                  className="px-1 text-center py-3"
+                                >
+                                  Condition value
+                                </td>
+                                <td
+                                  scope="col"
+                                  className="px-1 text-center py-3"
+                                >
+                                  Product Id
+                                </td>
+                              </tr>
+                            );
+                          })}
                         </table>
                       </td>
                     )}
