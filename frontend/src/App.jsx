@@ -16,6 +16,7 @@ import PrivateRoutes from "./Components/ProtectedRoute";
 import { useState } from "react";
 import { UserProvider } from "./Components/ContextAPI/UserContext";
 import OrdersPage from "./pages/OrdersPage";
+import ProfilePage from "./pages/ProfilePage";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -33,6 +34,9 @@ const router = createBrowserRouter(
         </Route>
         <Route path="/orders" element={<RootLayout />}>
           <Route index element={<OrdersPage />} />
+        </Route>
+        <Route path="/profile" element={<RootLayout />}>
+          <Route index element={<ProfilePage />} />
         </Route>
       </Route>
     </>

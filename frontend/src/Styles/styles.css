@@ -11,3 +11,7 @@ body {
     overflow-x: hidden;
     color: var(--color-dark);
 }
+
+.tab-active {
+    @apply bg-purple-500 text-white;
+}

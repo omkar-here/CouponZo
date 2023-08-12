@@ -81,8 +81,8 @@ function Sidebar() {
             </li>
 
             <li>
-              <a
-                href="#"
+              <Link
+                to="/profile"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <svg
@@ -99,9 +99,9 @@ function Sidebar() {
                   ></path>
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap  text-xl">
-                  Customer
+                  Profile
                 </span>
-              </a>
+              </Link>
             </li>
             <li className="absolute bottom-5">
               <a
