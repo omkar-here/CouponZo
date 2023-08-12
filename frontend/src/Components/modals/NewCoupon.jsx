@@ -63,7 +63,7 @@ function NewCoupon({ onClose }) {
 
       {/* ------------------------------ */}
       <div className="max-w-2xl w-full bg-white rounded-lg p-5">
-        <h2 className=" text-black font-bold text-2xl">Add Coupon</h2>
+        <h2 className=" text-black font-bold text-2xl">Place an Order</h2>
         <div className="flex flex-col">
           <form onSubmit={handleNewCoupon}>
             <div className="flex flex-row mb-2">
@@ -112,7 +112,7 @@ function NewCoupon({ onClose }) {
                   type="text"
                   required
                   name="customPrefix"
-                  className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
+                  className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2 w-72"
                 />
               </div>
             </div>
@@ -253,7 +253,7 @@ function NewCoupon({ onClose }) {
 
             <div className="flex gap-2">
               <button className="bg-purple-500 text-white max-w-md w-32 rounded-lg p-2 mt-5 hover:bg-purple-600">
-                Add Coupon
+                Place Order
               </button>
               <button
                 className="bg-red-500 text-white max-w-md w-32 rounded-lg p-2 mt-5 hover:bg-red-600"

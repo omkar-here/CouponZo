@@ -5,6 +5,10 @@ const Couponschema = new mongoose.Schema({
     type: String,
     enum: ["static", "dynamic"],
   },
+  orderName:{
+    type: String,
+    required: false
+  },
   code: {
     type: String,
     required: [true, "A coupon should have code"],
@@ -28,7 +32,7 @@ const Couponschema = new mongoose.Schema({
   },
   maxDiscountAmount: {
     type: Number,
-    required: [true, "A max discount amount should be mentioned"],
+    required: [false, "A max discount amount should be mentioned"],
   },
   conditions: {
     type: String,

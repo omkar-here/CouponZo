@@ -115,7 +115,7 @@ function OrdersPage() {
       <div className="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg">
         <table className="w-full max-w-full text-left text-gray-500 dark:text-gray-400">
           <thead className=" text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr className="text-sm">
+            <tr className="text-sm bg-[#6ea8e2]">
               <th scope="col" className="px-1 text-center py-3">
                 Order Type
               </th>
@@ -140,10 +140,12 @@ function OrdersPage() {
               <th scope="col" className="px-1 text-center py-3">
                 Expiry
               </th>
+              <th>
+                
+              </th>
             </tr>
           </thead>
           <tbody>
-            
             {orderList.map((order, key) => {
               return (
                 <React.Fragment key={key}>
@@ -168,7 +170,9 @@ function OrdersPage() {
                     <td className="px-6 py-4 text-center">
                       {order.discountValue}
                     </td>
-                    <td className="px-6 py-4 text-center">{order.expiry}</td>
+                    <td className="px-6 py-4 text-center">
+                      {new Date(order.expiry).toLocaleDateString("en-GB")}
+                    </td>
                     <td className="px-6 py-4 text-center">
                       <button
                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
@@ -176,31 +180,51 @@ function OrdersPage() {
                           setEditCoupon(true);
                         }}
                       >
-                        <svg
-                          data-accordion-icon
-                          className="w-3 h-3 rotate-180 shrink-0"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 10 6"
-                        >
-                          <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M9 5 5 1 1 5"
-                          />
-                        </svg>
+                        {order.couponList?.length > 0 &&
+                          (order.open == true ? (
+                            <svg
+                              data-accordion-icon
+                              className="w-3 h-3 rotate-180 shrink-0"
+                              aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 10 6"
+                            >
+                              <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 5 5 1 1 5"
+                              />
+                            </svg>
+                          ) : (
+                            <svg
+                              data-accordion-icon
+                              className="w-3 h-3 rotate-0 shrink-0"
+                              aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 10 6"
+                            >
+                              <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 5 5 1 1 5"
+                              />
+                            </svg>
+                          ))}
                       </button>
                     </td>
                   </tr>
                   <tr className="w-full">
-                    {order.open && (
-                      <td colSpan={8}>
+                    {order.open && order.couponList?.length > 0 && (
+                      <td colSpan={9} className="w-full">
                         <table className="w-full text-gray-500 dark:text-gray-400">
                           <thead className="w-full text-gray-500 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr className="text-sm w-full">
+                            <tr className="text-sm w-full ">
                               <th scope="col" className="px-1 text-center py-3">
                                 Coupon Code
                               </th>
@@ -222,8 +246,8 @@ function OrdersPage() {
                               <th scope="col" className="px-1 text-center py-3">
                                 Condition value
                               </th>
-                              <th scope="col" className="px-1 text-center py-3">
-                                Product Id
+                              <th>
+                                {                 }
                               </th>
                             </tr>
                           </thead>
@@ -240,38 +264,39 @@ function OrdersPage() {
                                   scope="col"
                                   className="px-1 text-center py-3  "
                                 >
-                                  Coupon Status
+                                  {coupon.redemptionLimit <= 0 ? (
+                                    <p className="text-red-400">Redeemed</p>
+                                  ) : (
+                                    <p className=" text-green-400">Available</p>
+                                  )}
                                 </td>
                                 <td
                                   scope="col"
                                   className="px-1 text-center py-3"
                                 >
-                                  Coupon Value
+                                  {coupon.discountValue}
                                 </td>
                                 <td
                                   scope="col"
                                   className="px-1 text-center py-3"
                                 >
-                                  Expiry
+                                  {new Date(coupon.expiry).toLocaleDateString(
+                                    "en-GB"
+                                  )}
                                 </td>
                                 <td
                                   scope="col"
                                   className="px-1 text-center py-3"
                                 >
-                                  Conditions
+                                  {coupon.conditions}
                                 </td>
                                 <td
                                   scope="col"
                                   className="px-1 text-center py-3"
                                 >
-                                  Condition value
+                                  {coupon.conditionsValue}
                                 </td>
-                                <td
-                                  scope="col"
-                                  className="px-1 text-center py-3"
-                                >
-                                  Product Id
-                                </td>
+                                
                               </tr>
                             );
                           })}
