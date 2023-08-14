@@ -35,6 +35,19 @@ const getCouponList = async (req, res) => {
   }
 };
 
+const getUserCouponList = async (req, res) => {
+  const { userId } = req.query;
+
+  try {
+    const coupon = await Coupon.find({ userId: userId });
+    const coupons = await res.json(coupon.length);
+  } catch (err) {
+    console.error("Error while fetching coupons:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
-  getCouponList, // Export the function correctly
+  getCouponList,
+  getUserCouponList,
 };
