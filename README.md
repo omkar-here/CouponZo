@@ -1,10 +1,11 @@
 # CouponZo (Promotion_Engine)
 > We have made a dummy site for testing our headless Promotion engine for generating Coupons for promoting sales on other platforms by integrating our API's with them.
 
-Link to the [Pizza Site](https://github.com/omkar-here/Pizza-Site) we made
+## Link to the [Pizza Site](https://github.com/omkar-here/Pizza-Site) we made
 
-Complete Project is there in the main branch.
-A coupon generator platform that allows businesses of all sizes to create and distribute coupons easily and efficiently. You can develop your own promotion engine which also lets vendors make their own schemes, gift cards or coupon systems.
+<p>Complete Project is there in the main branch.</p>
+<p>A coupon generator platform that allows businesses of all sizes to create and distribute coupons easily and efficiently. You can develop your own promotion engine which also lets vendors make their own schemes, gift cards or coupon systems.</p>
+
 ## A glance through our project
 ![pic1](https://user-images.githubusercontent.com/92844364/236857761-f1f4543c-11d2-4275-80ee-f26d8f3ece95.png) 
 
