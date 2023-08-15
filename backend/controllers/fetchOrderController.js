@@ -9,12 +9,10 @@ exports.getOrderList = async (req, res) => {
     const result = await Promise.all(
       user.orders.map(async (element) => {
         const order = await Order.findById(element);
-        console.log("dum : ", order);
         return order;
       })
     );
 
-    console.log("lol :", result);
     res.json({ result: result });
   } catch (err) {
     console.log(err);
@@ -27,18 +25,14 @@ exports.getRecentOrderList = async (req, res) => {
     const user = await User.findById(userId);
 
     const result = await Promise.all(
-      user.orders
-        .sort({ createdAt: -1 })
-        .slice(0, 5)
-        .map(async (element) => {
-          const order = await Order.findById(element);
-          console.log("dum : ", order);
-          return order;
-        })
+      user.orders.map(async (element) => {
+        const order = await Order.findById(element);
+        return order;
+      })
     );
-
-    console.log("lol :", result);
-    res.json({ result: result });
+    result.sort((a, b) => b.createdAt - a.createdAt);
+    const slicedResult = result.slice(0, 5);
+    res.json({ result: slicedResult }).status(200);
   } catch (err) {
     console.log(err);
   }

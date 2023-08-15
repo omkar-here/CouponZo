@@ -14,9 +14,8 @@ exports.confirmCoupon = async (req, res) => {
         const order = await Order.findOne({
           couponList: { $in: [couponCode] },
         });
-
-        order.couponsUsed = order.couponsUsed + 1;
-
+        
+        .couponsUsed = order.couponsUsed + 1;
         await order.save();
 
         res.json({ message: "Coupon redeemed successfully" }).status(200);

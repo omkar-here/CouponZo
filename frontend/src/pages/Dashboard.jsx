@@ -16,7 +16,7 @@ export const Dashboard = (props) => {
   const [editCoupon, setEditCoupon] = useState(false);
   const [totalCouponsCount, setTotalCouponsCount] = useState(0);
   const [totalCouponsUsed, setTotalCouponsUsed] = useState(0);
-  const [orderList, setOrderList] = useState([]);
+  const [orderList, setOrderList] = useState();
   const { userInfo } = useContext(UserContext);
 
   function getTotalCoupons() {
@@ -32,7 +32,7 @@ export const Dashboard = (props) => {
 
   function getTotalUsedCoupons() {
     axios
-      .post("http://localhost:3000/coupon/fetchUsedCoupons", {
+      .post("http://localhost:3000/coupon/fetchRedeemedCoupons", {
         userId: userInfo._id,
       })
       .then((res) => {
@@ -47,8 +47,8 @@ export const Dashboard = (props) => {
         userId: userInfo._id,
       })
       .then((res) => {
-        console.log(res.data);
-        setOrderList(res.data);
+        console.log(res);
+        setOrderList(res.data.result);
       });
   }
 
@@ -100,13 +100,7 @@ export const Dashboard = (props) => {
                     <VscGraph className="inline-block h-10 w-10 text-white bg-blue-400 rounded-full mr-2" />
                     Total Coupons Used {totalCouponsUsed}
                   </h2>
-                  <div className="w-[80px] absolute ml-auto bottom-5 right-5">
-                    {/* <CircularProgressBar
-                      color={"#8791ee"}
-                      percentage={66}
-                      textColor={"#8791ee"}
-                    ></CircularProgressBar>{" "} */}
-                  </div>
+                  <div className="w-[80px] absolute ml-auto bottom-5 right-5"></div>
                 </div>
               </div>
               <div className="card w-90 p-2 relative h-[200px] shadow-2xl pb-0 pt-[15px]   bg-white text-primary-content">
@@ -218,7 +212,7 @@ export const Dashboard = (props) => {
                 className="flex w-full border-dashed border-2 rounded-xl border-blue-600 hover:border-blue-400 cursor-pointer hover:text-blue-400 hover:bg-blue-100 font-bold shadow-2xl text-blue-600 flex-col justify-center items-center"
                 onClick={() => setShowNewCouponModal(true)}
               >
-                <span className="px-8 py-8">Create New Orderp</span>
+                <span className="px-8 py-8">Create New Order</span>
               </button>
             </div>
           </div>

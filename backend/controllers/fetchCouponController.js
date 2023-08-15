@@ -48,13 +48,13 @@ const getUserCouponList = async (req, res) => {
   }
 };
 
-const getUserCouponListUsed = async (req, res) => {
-  const { userId } = req.query;
-
+const getRedeemedCouponList = async (req, res) => {
+  const userId = req.body.userId;
   try {
     const user = await User.find({ _id: userId });
-    const userCouponsCount = user[0].couponsUsed;
-    res.json({ userCouponsCount: userCouponsCount });
+    const redeemedCouponsCount = user[0].couponsUsed;
+    console.log(user[0].couponsUsed);
+    res.json({ redeemedCouponsCount: redeemedCouponsCount });
   } catch (err) {
     console.error("Error while fetching coupons:", err);
     res.status(500).json({ error: "Internal Server Error" });
@@ -64,5 +64,5 @@ const getUserCouponListUsed = async (req, res) => {
 module.exports = {
   getCouponList,
   getUserCouponList,
-  getUserCouponListUsed,
+  getRedeemedCouponList,
 };
