@@ -39,33 +39,30 @@ const userSchema = new Schema({
     default: 0,
   },
   orders: {
-    type: Schema.Types.ObjectId,
+    type: [mongoose.Types.ObjectId],
     ref: "Order",
   },
 });
 
 //function to hash the password before saving into db
 userSchema.pre("save", async function (next) {
-  const salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt);
+  if (this.isModified("password")) {
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+  }
   next();
 });
 
-//static method to login user
 userSchema.statics.login = async function (email, password) {
-  console.log(email,password);
   const user = await this.findOne({ email: email });
   if (user) {
-    console.log(user)
-    const auth = await bcrypt.compare(password, user.password);
-    console.log(auth, password);
-    if (auth) {
-      console.log(user);
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (isMatch) {
       return user;
     }
-    throw Error("incorrect password");
+    throw new Error("Incorrect password");
   }
-  throw Error("incorrect email");
+  throw new Error("Incorrect email");
 };
 
 const User = mongoose.model("User", userSchema);

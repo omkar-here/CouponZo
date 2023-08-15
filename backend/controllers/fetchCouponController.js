@@ -1,6 +1,6 @@
 const Order = require("../models/Order");
 const Coupon = require("../models/Coupon");
-
+const User = require("../models/User");
 const getCouponList = async (req, res) => {
   console.log(req.params);
   const { orderId } = req.query;
@@ -36,11 +36,25 @@ const getCouponList = async (req, res) => {
 };
 
 const getUserCouponList = async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    const user = await User.find({ _id: userId });
+    const userCouponsCount = user[0].totalCouponsGenerated;
+    res.json({ userCouponsCount: userCouponsCount });
+  } catch (err) {
+    console.error("Error while fetching coupons:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const getUserCouponListUsed = async (req, res) => {
   const { userId } = req.query;
 
   try {
-    const coupon = await Coupon.find({ userId: userId });
-    const coupons = await res.json(coupon.length);
+    const user = await User.find({ _id: userId });
+    const userCouponsCount = user[0].couponsUsed;
+    res.json({ userCouponsCount: userCouponsCount });
   } catch (err) {
     console.error("Error while fetching coupons:", err);
     res.status(500).json({ error: "Internal Server Error" });
@@ -50,4 +64,5 @@ const getUserCouponList = async (req, res) => {
 module.exports = {
   getCouponList,
   getUserCouponList,
+  getUserCouponListUsed,
 };

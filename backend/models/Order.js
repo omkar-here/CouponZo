@@ -53,9 +53,9 @@ const OrderSchema = new mongoose.Schema({
     required: [true, "Expiry date should be mentioned"],
   },
 
-  OrderAt: {
+  createdAt: {
     type: Date,
-    value: Date.now(),
+    default: Date.now(),
   },
 
   OrderId: {
@@ -75,5 +75,7 @@ const OrderSchema = new mongoose.Schema({
     required: [true, "Name of the Order should be mentioned"],
   },
 });
+
+OrderSchema.index({ createdAt: -1 });
 
 module.exports = mongoose.model("Order", OrderSchema);

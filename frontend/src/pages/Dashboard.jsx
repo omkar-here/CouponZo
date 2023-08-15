@@ -1,17 +1,62 @@
 import { useState, useContext } from "react";
 import CircularProgressBar from "../Components/CircularProgressBar";
 import { MdAutoGraph } from "react-icons/md";
-import { GoGraph } from "react-icons/go";
+import { SlGraph } from "react-icons/sl";
 import { VscGraph } from "react-icons/vsc";
 import { BsFillCartFill } from "react-icons/bs";
 import { GiShoppingBag } from "react-icons/gi";
 import NewCoupon from "../Components/modals/NewCoupon";
 import EditCoupon from "../Components/modals/EditCoupon";
 import { UserContext } from "../Components/ContextAPI/UserContext";
+import axios from "axios";
+import { useEffect } from "react";
+
 export const Dashboard = (props) => {
   const [showNewCouponModal, setShowNewCouponModal] = useState(false);
   const [editCoupon, setEditCoupon] = useState(false);
+  const [totalCouponsCount, setTotalCouponsCount] = useState(0);
+  const [totalCouponsUsed, setTotalCouponsUsed] = useState(0);
+  const [orderList, setOrderList] = useState([]);
   const { userInfo } = useContext(UserContext);
+
+  function getTotalCoupons() {
+    axios
+      .post("http://localhost:3000/coupon/fetchUserCoupons", {
+        userId: userInfo._id,
+      })
+      .then((res) => {
+        console.log(res.data.userCouponsCount);
+        setTotalCouponsCount(res.data.userCouponsCount);
+      });
+  }
+
+  function getTotalUsedCoupons() {
+    axios
+      .post("http://localhost:3000/coupon/fetchUsedCoupons", {
+        userId: userInfo._id,
+      })
+      .then((res) => {
+        console.log(res.data.userCouponsCount);
+        setTotalCouponsUsed(res.data.userCouponsCount);
+      });
+  }
+
+  function getRecentOrders() {
+    axios
+      .post("http://localhost:3000/coupon/fetchRecentOrders", {
+        userId: userInfo._id,
+      })
+      .then((res) => {
+        console.log(res.data);
+        setOrderList(res.data);
+      });
+  }
+
+  useEffect(() => {
+    getTotalCoupons();
+    getTotalUsedCoupons();
+    getRecentOrders();
+  }, []);
 
   return (
     <div className="flex h-full min-h-screen bg-[#f6f6f9]">
@@ -37,15 +82,15 @@ export const Dashboard = (props) => {
               <div className="flex card w-90 p-2 h-[200px] shadow-2xl relative bg-white text-primary-content">
                 <div className="card-body ">
                   <h2 className="card-title text-xl font-bold text-left text-black">
-                    <GoGraph className="inline-block mr-2 h-10 w-10 text-white bg-red-400 rounded-full" />
-                    Total Coupons Generated
+                    <SlGraph className="inline-block mr-2 h-10 w-14 text-white bg-red-400 rounded-full" />
+                    Total Coupons Generated {totalCouponsCount}
                   </h2>
                   <div className="w-[80px] absolute ml-auto bottom-5 right-5">
-                    <CircularProgressBar
+                    {/* <CircularProgressBar
                       color={"#69f0b7"}
-                      percentage={66}
+                      percentage={totalCouponsCount}
                       textColor="#69f0b7"
-                    ></CircularProgressBar>{" "}
+                    ></CircularProgressBar>{" "} */}
                   </div>
                 </div>
               </div>
@@ -53,14 +98,14 @@ export const Dashboard = (props) => {
                 <div className="card-body">
                   <h2 className="card-title text-xl font-bold text-left text-black">
                     <VscGraph className="inline-block h-10 w-10 text-white bg-blue-400 rounded-full mr-2" />
-                    Total Coupons Used
+                    Total Coupons Used {totalCouponsUsed}
                   </h2>
                   <div className="w-[80px] absolute ml-auto bottom-5 right-5">
-                    <CircularProgressBar
+                    {/* <CircularProgressBar
                       color={"#8791ee"}
                       percentage={66}
                       textColor={"#8791ee"}
-                    ></CircularProgressBar>{" "}
+                    ></CircularProgressBar>{" "} */}
                   </div>
                 </div>
               </div>
@@ -80,25 +125,22 @@ export const Dashboard = (props) => {
                 </div>
               </div>
             </div>
-            <h3 className="flex font-bold justify-items-start text-2xl mb-5 mt-8">
-              Recent Orders
-            </h3>
 
             <div className="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg">
               <table className="w-full max-w-full text-left text-gray-500 dark:text-gray-400">
                 <thead className=" text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                  <tr className="text-sm">
+                  <tr className="text-sm bg-[#6ea8e2]">
+                    <th scope="col" className="px-1 text-center py-3">
+                      Order Type
+                    </th>
                     <th scope="col" className="px-1 text-center py-3  ">
-                      Order ID
+                      Order Name
                     </th>
                     <th scope="col" className="px-1 text-center py-3">
                       Custom Prefix
                     </th>
                     <th scope="col" className="px-1 text-center py-3">
                       No. of Coupons
-                    </th>
-                    <th scope="col" className="px-1 text-center py-3">
-                      Redemption Limit
                     </th>
                     <th scope="col" className="px-1 text-center py-3 ">
                       Format
@@ -107,42 +149,49 @@ export const Dashboard = (props) => {
                       Discount Type
                     </th>
                     <th scope="col" className="px-1 text-center py-3">
-                      Discount Number
+                      Discount Value
                     </th>
                     <th scope="col" className="px-1 text-center py-3">
                       Expiry
                     </th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" className="px-6 py-6 text-center">
-                      123456789
-                    </th>
-                    <td className="px-6 py-4 text-center">TP</td>
-                    <td className="px-6 py-4 text-center">100</td>
-                    <td className="px-6 py-4 text-center">10</td>
-                    <td className="px-6 py-4 text-center">alphanumeric</td>
-                    <td className="px-6 py-4 text-center">Percentage</td>
-                    <td className="px-6 py-4 text-center">200</td>
-                    <td className="px-6 py-4 text-center">2021-10-10</td>
-                    <td className="px-6 py-4 text-center">
-                      <button
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                        onClick={() => {
-                          setEditCoupon(true);
-                        }}
+                  {orderList?.map((order, key) => {
+                    return (
+                      <tr
+                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                        key={key}
                       >
-                        Edit
-                      </button>
-                    </td>
-                  </tr>
+                        <td className="px-6 py-4 text-center">{order.type}</td>
+                        <td className="px-6 py-4 text-center">{order.name}</td>
+
+                        <td className="px-6 py-4 text-center">
+                          {order.customPrefix}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {order.couponList?.length}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {order.format}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {order.discountType}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {order.discountValue}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {new Date(order.expiry).toLocaleDateString("en-GB")}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
           </div>
-
-                        
 
           <div className="w-1/5 ml-5">
             <span className="flex font-bold justify-items-start text-xl mb-5 mt-8">

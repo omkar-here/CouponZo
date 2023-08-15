@@ -1,21 +1,21 @@
-import { useState, useEffect, useRef } from "react";
-
+import { useState, useEffect, useRef, useContext } from "react";
+import { UserContext } from "../Components/ContextAPI/UserContext";
 import React from "react";
 import axios from "axios";
 
 function OrdersPage() {
   const [orderList, setOrderList] = useState([{}]);
+  const { userInfo } = useContext(UserContext);
 
   useEffect(() => {
-    console.log("entered");
-
-    axios.get("http://localhost:3000/coupon/fetchOrders").then((orderList) => {
-      setOrderList(
-        orderList.data.filter((order) => {
-          return order.customPrefix != "ABC";
-        })
-      );
-    });
+    axios
+      .post("http://localhost:3000/coupon/fetchOrders", {
+        userId: userInfo._id,
+      })
+      .then((orderList) => {
+        console.log(orderList?.data.result);
+        setOrderList(orderList?.data.result);
+      });
   }, []);
 
   const fetchOrderCoupons = (orderId, index) => {
@@ -140,13 +140,11 @@ function OrdersPage() {
               <th scope="col" className="px-1 text-center py-3">
                 Expiry
               </th>
-              <th>
-                
-              </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            {orderList.map((order, key) => {
+            {orderList?.map((order, key) => {
               return (
                 <React.Fragment key={key}>
                   <tr
@@ -246,9 +244,7 @@ function OrdersPage() {
                               <th scope="col" className="px-1 text-center py-3">
                                 Condition value
                               </th>
-                              <th>
-                                {                 }
-                              </th>
+                              <th>{}</th>
                             </tr>
                           </thead>
                           {order.coupons?.map((coupon, key) => {
@@ -296,7 +292,6 @@ function OrdersPage() {
                                 >
                                   {coupon.conditionsValue}
                                 </td>
-                                
                               </tr>
                             );
                           })}

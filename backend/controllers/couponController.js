@@ -51,7 +51,13 @@ exports.coupon_gen = catchAsync(async (req, res) => {
     expiry,
   });
 
-  user.orders = order._id;
+  user.orders.push(order._id);
+  if (type === "static") {
+    user.totalCouponsGenerated += Number(redemptionLimit);
+  } else if (type === "dynamic") {
+    user.totalCouponsGenerated += Number(numCodes);
+  }
+
   await user.save();
 
   let couponList = [];
