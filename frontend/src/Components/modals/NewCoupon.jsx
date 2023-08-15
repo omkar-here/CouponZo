@@ -67,18 +67,17 @@ function NewCoupon({ onClose }) {
         <div className="flex flex-col">
           <form onSubmit={handleNewCoupon}>
             <div className="flex flex-row mb-2">
-              <div className="flex flex-col mr-4 w-1/2">
-                <label className="text-black text-md">Coupon type</label>
-                <select
+              <div className="flex flex-col pr-4 w-1/2">
+                <label className="text-black text-md">Order Name</label>
+                <input
                   onChange={handleChange}
-                  name="type"
+                  type="text"
+                  name="name"
                   required
-                  className=" cursor-pointer border-1 w-full border-purple-300 bg-blue-200 rounded-lg p-2"
-                >
-                  <option value="static">Static</option>
-                  <option value="dynamic">Dynamic</option>
-                </select>
+                  className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
+                />
               </div>
+
               <div className="flex flex-col w-1/2">
                 <label className="text-black text-md">Coupon Format</label>
                 <select
@@ -96,7 +95,19 @@ function NewCoupon({ onClose }) {
 
             <div className="flex flex-row mb-2">
               <div className="flex flex-col mr-4 w-1/2">
-                <label className="text-black text-md">Coupon Length</label>
+                <label className="text-black text-md">Coupon type</label>
+                <select
+                  onChange={handleChange}
+                  name="type"
+                  required
+                  className=" cursor-pointer border-1 w-full border-purple-300 bg-blue-200 rounded-lg p-2"
+                >
+                  <option value="static">Static</option>
+                  <option value="dynamic">Dynamic</option>
+                </select>
+              </div>
+              <div className="flex flex-col pr-4 w-1/5">
+                <label className="text-black text-md">Code Length</label>
                 <input
                   onChange={handleChange}
                   type="number"
@@ -105,14 +116,14 @@ function NewCoupon({ onClose }) {
                   className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
                 />
               </div>
-              <div className="flex flex-col w-full">
+              <div className="flex flex-col w-2/5">
                 <label className="text-black text-md">Custom Prefix</label>
                 <input
                   onChange={handleChange}
                   type="text"
                   required
                   name="customPrefix"
-                  className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2 w-72"
+                  className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
                 />
               </div>
             </div>

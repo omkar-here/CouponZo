@@ -30,6 +30,7 @@ exports.coupon_gen = catchAsync(async (req, res) => {
     maxDiscountAmount,
     conditions,
     conditionsValue,
+    name,
     expiry,
   } = req.body;
   const user = await User.findById(userId);
@@ -46,6 +47,7 @@ exports.coupon_gen = catchAsync(async (req, res) => {
     length,
     conditions,
     conditionsValue,
+    name,
     expiry,
   });
 

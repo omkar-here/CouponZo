@@ -11,4 +11,6 @@ router.route("/confirm").post(handleCoupon.confirmCoupon);
 router.route("/setRedemptionLimit").post(handleCoupon.setRedemptionLimit);
 router.route("/fetchOrders").get(fetchOrders.getOrderList);
 router.route("/fetchCoupons").get(fetchCoupons.getCouponList);
+// get total user coupons route
+router.route("/fetchUserCoupons").get(fetchCoupons.getUserCouponList);
 module.exports = router;

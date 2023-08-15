@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Coupon= require("./Coupon");
+const Coupon = require("./Coupon");
 const OrderSchema = new mongoose.Schema({
   type: {
     type: String,
@@ -64,7 +64,15 @@ const OrderSchema = new mongoose.Schema({
   },
   couponList: {
     type: [mongoose.Types.ObjectId], // Assuming your coupon IDs are ObjectIds
-    ref: Coupon
+    ref: Coupon,
+  },
+  couponsUsed: {
+    type: Number, // Assuming your coupon IDs are ObjectIds
+    default: 0,
+  },
+  name: {
+    type: String,
+    required: [true, "Name of the Order should be mentioned"],
   },
 });
 
