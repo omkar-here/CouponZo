@@ -4,8 +4,6 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const maxAge = 1000 * 60 * 60 * 24*10;
 
-
-
 const createToken = (id) => {
   //signing the jwt (So this will be unique for every user)
   return jwt.sign({ id }, "couponzo secret key", {

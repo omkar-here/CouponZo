@@ -169,7 +169,7 @@ export const Dashboard = (props) => {
                 className="flex w-full border-dashed border-2 rounded-xl border-blue-600 hover:border-blue-400 cursor-pointer hover:text-blue-400 hover:bg-blue-100 font-bold shadow-2xl text-blue-600 flex-col justify-center items-center"
                 onClick={() => setShowNewCouponModal(true)}
               >
-                <span className="px-8 py-8">Create New Order</span>
+                <span className="px-8 py-8">Create New Orderp</span>
               </button>
             </div>
           </div>
