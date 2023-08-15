@@ -8,6 +8,8 @@ import { GiShoppingBag } from "react-icons/gi";
 import NewCoupon from "../Components/modals/NewCoupon";
 import EditCoupon from "../Components/modals/EditCoupon";
 import { UserContext } from "../Components/ContextAPI/UserContext";
+import CountUpExample from "../Components/CountUp";
+import CountUp from "react-countup";
 import axios from "axios";
 import { useEffect } from "react";
 
@@ -80,41 +82,57 @@ export const Dashboard = (props) => {
           <div className=" w-4/5">
             <div className="grid grid-cols-3 gap-4 mb-4">
               <div className="flex card w-90 p-2 h-[200px] shadow-2xl relative bg-white text-primary-content">
-                <div className="card-body ">
-                  <h2 className="card-title text-xl font-bold text-left text-black">
-                    <SlGraph className="inline-block mr-2 h-10 w-14 text-white bg-red-400 rounded-full" />
-                    Total Coupons Generated {totalCouponsCount}
+                <div className="flex p-8 pl-8 pr-none gap-3 ">
+                  <SlGraph className=" w-24 h-full text-white bg-red-400 rounded-full" />
+
+                  <h2 className=" card-title text-xl font-bold text-left text-black">
+                    Total Coupons Generated
                   </h2>
-                  <div className="w-[80px] absolute ml-auto bottom-5 right-5">
-                    {/* <CircularProgressBar
-                      color={"#69f0b7"}
-                      percentage={totalCouponsCount}
-                      textColor="#69f0b7"
-                    ></CircularProgressBar>{" "} */}
-                  </div>
+                </div>
+                <div className="absolute bottom-6 right-10">
+                  <p className="font-bold text-2xl  mb-0 text-black">
+                    <CountUp end={totalCouponsCount} duration={4} />
+                  </p>
+                  <p className="font-bold text-2xl bg-gradient-to-t mt-[-20px] w-4 from-gray-300 to-transparent transform scale-y-[-1] opacity-20 text-black">
+                    <CountUp end={totalCouponsCount} duration={4} />
+                  </p>
                 </div>
               </div>
               <div className="card w-90 p-2  bg-white h-[200px] shadow-2xl relative text-primary-content">
-                <div className="card-body">
-                  <h2 className="card-title text-xl font-bold text-left text-black">
-                    <VscGraph className="inline-block h-10 w-10 text-white bg-blue-400 rounded-full mr-2" />
-                    Total Coupons Used {totalCouponsUsed}
+                <div className="flex p-8 pl-8 pr-none gap-2">
+                  <VscGraph className=" w-14 h-14  text-white bg-blue-400 rounded-full mr-2" />
+                  <h2 className="card-title w-40 text-xl font-bold text-left text-black">
+                    Total Coupons Used <p>{totalCouponsUsed}</p>
                   </h2>
-                  <div className="w-[80px] absolute ml-auto bottom-5 right-5"></div>
+                  <div className="absolute bottom-6 right-10">
+                    <p className="font-bold text-2xl  mb-0 text-black">
+                      <CountUp end={totalCouponsUsed} duration={2} />
+                    </p>
+                    <p className="font-bold text-2xl bg-gradient-to-t mt-[-20px] w-4 from-gray-300 to-transparent transform scale-y-[-1] opacity-20 text-black">
+                      <CountUp end={totalCouponsUsed} duration={2} />
+                    </p>
+                  </div>{" "}
                 </div>
               </div>
-              <div className="card w-90 p-2 relative h-[200px] shadow-2xl pb-0 pt-[15px]   bg-white text-primary-content">
-                <div className="card-body">
-                  <h2 className="card-title text-xl font-bold text-black">
-                    <MdAutoGraph className="inline-block h-10 w-10 text-white bg-green-400 rounded-full mr-2" />
-                    Billing
+              <div className="card w-90  relative h-[200px] shadow-2xl pb-0 pt-[15px]   bg-white text-primary-content">
+                <div className=" flex p-8 pl-8 pr-none gap-2">
+                  <MdAutoGraph className=" w-20 h-14  text-white bg-green-400 rounded-full" />
+                  <h2 className="card-title w-22 text-xl font-bold text-black ">
+                    Total Coupons Remaining
                   </h2>
-                  <div className="w-[80px] absolute bottom-5 right-5">
-                    <CircularProgressBar
-                      percentage={66}
-                      textColor="#F37582"
-                      color="#F37582"
-                    ></CircularProgressBar>{" "}
+                  <div className="absolute bottom-6 right-10">
+                    <p className="font-bold text-2xl  mb-0 text-black">
+                      <CountUp
+                        end={totalCouponsCount - totalCouponsUsed}
+                        duration={2}
+                      />
+                    </p>
+                    <p className="font-bold text-2xl bg-gradient-to-t mt-[-20px] w-4 from-gray-300 to-transparent transform scale-y-[-1] opacity-20 text-black">
+                      <CountUp
+                        end={totalCouponsCount - totalCouponsUsed}
+                        duration={2}
+                      />
+                    </p>
                   </div>
                 </div>
               </div>

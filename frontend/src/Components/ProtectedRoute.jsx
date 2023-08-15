@@ -13,8 +13,6 @@ const PrivateRoutes = () => {
     axios
       .get("http://localhost:3000/verify", { withCredentials: true })
       .then((response) => {
-        // console.log(response);
-        // console.log("hello");
         if (response.data) {
           setIsLoggedIn(true);
           setUserId(response.data._id);

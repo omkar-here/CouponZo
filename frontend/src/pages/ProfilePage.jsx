@@ -11,11 +11,13 @@ import React, { useState } from "react";
 import CodeBlock from "../Components/CodeBlock";
 import { TiTickOutline } from "react-icons/ti";
 import Clipboard from "clipboard";
-
+import { UserContext } from "../Components/ContextAPI/UserContext";
+import { useContext } from "react";
 function ProfilePage() {
   const [isCopied, setIsCopied] = useState(false);
   const [activeTab, setActiveTab] = useState("VERIFY");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("https://github.com/omkar-here.png");
+  const { userInfo } = useContext(UserContext);
   const [code, setCode] = useState({
     api: `
       axios
@@ -113,8 +115,7 @@ function ProfilePage() {
             <div className="relative  pr-10">
               <img
                 className="border-2 ml-10 rounded-full bg-slate-300 w-56 "
-                src="
-        https://github.com/omkar-here.png"
+                src={image}
                 alt="Omkar"
               />
               <div className="">
@@ -124,6 +125,7 @@ function ProfilePage() {
                   id="fileInput"
                   className="hidden"
                   placeholder=""
+                  onChange={handleImageChange}
                 />
 
                 <label
@@ -134,101 +136,108 @@ function ProfilePage() {
                 </label>
               </div>
             </div>
-            <div className="flex flex-col gap-y-3 mt-10">
+            <div className="flex flex-col gap-y-3 mt-5">
               <p className=" text-xl">
-                <strong>Company Name:</strong> Value 1
+                <strong>User Name:</strong> {userInfo.userName}
               </p>
               <p className=" text-xl">
-                <strong>Email Id:</strong> Value 2
+                <strong>Company Name:</strong> {console.log(userInfo)}
+                {userInfo.companyName}
               </p>
               <p className=" text-xl">
-                <strong>Created On:</strong> Value 2
+                <strong>Email Id:</strong> {userInfo.email}
+              </p>
+              <p className=" text-xl">
+                <strong>Total Coupons Generated:</strong>{" "}
+                {userInfo.totalCouponsGenerated}
+              </p>
+              <p className=" text-xl">
+                <strong>Total Coupons Used:</strong> {userInfo.totalCouponsUsed}
               </p>
             </div>
           </div>
         </div>
-          <div className="  m-auto w-[90%] mt-10  shadow-2xl  rounded-lg  ">
-            <div className="flex shadow-lg  h-15  m-auto flex-row  bg-[#2db6e2]  rounded-xl rounded-bl-none rounded-br-none">
-              <div className="flex items-end  justify-between w-full p-2 pb-0">
-                <span className=" font-monospace text-2xl m-3 ">
-                  Connect to our services using this API Template.{" "}
-                </span>
-                <div className="tabs inline-block pr-10">
-                  <a
-                    className={`tab tab-lifted hover:border-purple-500 border-[#2db6e2] font-bold ${
-                      activeTab === "VERIFY" ? "tab-active" : ""
-                    }`}
-                    onClick={() => handleVerifyTabClick()}
-                  >
-                    VERIFY
-                  </a>
-                  <a
-                    className={`tab tab-lifted hover:border-purple-500 border-[#2db6e2] font-bold ${
-                      activeTab === "REDEEM" ? "tab-active" : ""
-                    }`}
-                    onClick={() => {
-                      handleRedeemTabClick();
-                    }}
-                  >
-                    REDEEM
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div className="flex  m-auto ">
-              <div className="block w-[50%] bg-[#9fdcf0] p-6">
-                <div className=" rounded-2xl text-[#333333] text-lg p-6 pt-3 bg-[#E5E7EB]">
-                  <h6 className=" font-bold">
-                    Documentation{" "}
-                    <ImArrowDown className="inline-block w-6 pl-0  text-orange-400 border-[#49ad13]" />
-                  </h6>
-                  {activeTab === "VERIFY" ? (
-                    <div>
-                      <p className="mt-4">
-                        Easily include our coupon verification feature on your
-                        website with just a simple copy-paste of the provided
-                        code.
-                      </p>
-                      <p className="mt-2">
-                        By adjusting the details like user ID, coupon code,
-                        quantity, and product list, your website can
-                        effortlessly check and validate coupons when users
-                        interact with it.
-                      </p>
-                    </div>
-                  ) : (
-                    <div>
-                      <p className="mt-4">
-                        Easily include our coupon redemption feature on your
-                        website with just a simple copy-paste of the provided
-                        code.
-                      </p>
-                      <p className="mt-2">
-                        By adjusting the details like user ID, coupon code,
-                        quantity, and product list, your website can
-                        effortlessly redeem coupons when users interact with it.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className=" bg-white w-[65%]">
-                <LuCopy
+        <div className="  m-auto w-[90%] mt-10  shadow-2xl  rounded-lg  ">
+          <div className="flex shadow-lg  h-15  m-auto flex-row  bg-[#2db6e2]  rounded-xl rounded-bl-none rounded-br-none">
+            <div className="flex items-end  justify-between w-full p-2 pb-0">
+              <span className=" font-monospace text-2xl m-3 ">
+                Connect to our services using this API Template.{" "}
+              </span>
+              <div className="tabs inline-block pr-10">
+                <a
+                  className={`tab tab-lifted hover:border-purple-500 border-[#2db6e2] font-bold ${
+                    activeTab === "VERIFY" ? "tab-active" : ""
+                  }`}
+                  onClick={() => handleVerifyTabClick()}
+                >
+                  VERIFY
+                </a>
+                <a
+                  className={`tab tab-lifted hover:border-purple-500 border-[#2db6e2] font-bold ${
+                    activeTab === "REDEEM" ? "tab-active" : ""
+                  }`}
                   onClick={() => {
-                    console.log(code.api);
-                    handleClickCopy(code.api);
+                    handleRedeemTabClick();
                   }}
-                  className="copy-button text-3xl right-[5%] mt-5 absolute inline-block ml-3 cursor-pointer p-1 rounded-lg"
-                />
-                {isCopied ? (
-                  <TiTickOutline className="text-2xl  text-white absolute inline-block  right-[10%] mt-6 rounded-full bg-blue-500" />
-                ) : (
-                  <></>
-                )}
-                <CodeBlock code={code.api} />
+                >
+                  REDEEM
+                </a>
               </div>
             </div>
           </div>
+          <div className="flex  m-auto ">
+            <div className="block w-[50%] bg-[#9fdcf0] p-6">
+              <div className=" rounded-2xl text-[#333333] text-lg p-6 pt-3 bg-[#E5E7EB]">
+                <h6 className=" font-bold">
+                  Documentation{" "}
+                  <ImArrowDown className="inline-block w-6 pl-0  text-orange-400 border-[#49ad13]" />
+                </h6>
+                {activeTab === "VERIFY" ? (
+                  <div>
+                    <p className="mt-4">
+                      Easily include our coupon verification feature on your
+                      website with just a simple copy-paste of the provided
+                      code.
+                    </p>
+                    <p className="mt-2">
+                      By adjusting the details like user ID, coupon code,
+                      quantity, and product list, your website can effortlessly
+                      check and validate coupons when users interact with it.
+                    </p>
+                  </div>
+                ) : (
+                  <div>
+                    <p className="mt-4">
+                      Easily include our coupon redemption feature on your
+                      website with just a simple copy-paste of the provided
+                      code.
+                    </p>
+                    <p className="mt-2">
+                      By adjusting the details like user ID, coupon code,
+                      quantity, and product list, your website can effortlessly
+                      redeem coupons when users interact with it.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className=" bg-white w-[65%]">
+              <LuCopy
+                onClick={() => {
+                  console.log(code.api);
+                  handleClickCopy(code.api);
+                }}
+                className="copy-button text-3xl right-[5%] mt-5 absolute inline-block ml-3 cursor-pointer p-1 rounded-lg"
+              />
+              {isCopied ? (
+                <TiTickOutline className="text-2xl  text-white absolute inline-block  right-[10%] mt-6 rounded-full bg-blue-500" />
+              ) : (
+                <></>
+              )}
+              <CodeBlock code={code.api} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

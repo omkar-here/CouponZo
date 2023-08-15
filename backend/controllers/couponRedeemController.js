@@ -3,9 +3,10 @@ const User = require("../models/User");
 const Order = require("../models/Order");
 
 exports.confirmCoupon = async (req, res) => {
-  let { couponCode, totalAmount } = req.body;
+  let { couponCode, totalAmount,userId } = req.body;
   if (couponCode != null) {
     try {
+      const user= await User.findById(userId);
       const coupon = await Coupon.findOne({ code: couponCode });
 
       if (coupon.redemptionLimit > 0 && coupon.expiry > Date.now()) {
@@ -15,8 +16,8 @@ exports.confirmCoupon = async (req, res) => {
           couponList: { $in: [couponCode] },
         });
         
-        .couponsUsed = order.couponsUsed + 1;
-        await order.save();
+        user.couponsUsed = user.couponsUsed + 1;
+        await user.save();
 
         res.json({ message: "Coupon redeemed successfully" }).status(200);
       } else {

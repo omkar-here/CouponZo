@@ -4,7 +4,7 @@ import React from "react";
 import axios from "axios";
 
 function OrdersPage() {
-  const [orderList, setOrderList] = useState([{}]);
+  const [orderList, setOrderList] = useState([]);
   const { userInfo } = useContext(UserContext);
 
   useEffect(() => {
@@ -153,7 +153,7 @@ function OrdersPage() {
                     onClick={() => toggleAccordion(key)}
                   >
                     <td className="px-6 py-4 text-center">{order.type}</td>
-                    <td className="px-6 py-4 text-center">ORDER NAME</td>
+                    <td className="px-6 py-4 text-center">{order.name}</td>
 
                     <td className="px-6 py-4 text-center">
                       {order.customPrefix}
@@ -221,7 +221,7 @@ function OrdersPage() {
                     {order.open && order.couponList?.length > 0 && (
                       <td colSpan={9} className="w-full">
                         <table className="w-full text-gray-500 dark:text-gray-400">
-                          <thead className="w-full text-gray-500 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                          <thead className="w-full text-gray-500 uppercase bg-[#ECECF0] dark:bg-gray-700 dark:text-gray-400">
                             <tr className="text-sm w-full ">
                               <th scope="col" className="px-1 text-center py-3">
                                 Coupon Code
@@ -252,7 +252,7 @@ function OrdersPage() {
                               <tr key={key}>
                                 <td
                                   scope="col"
-                                  className="px-1 text-center py-3"
+                                  className="px-1 text-center py-3 select-text"
                                 >
                                   {coupon.code}
                                 </td>
