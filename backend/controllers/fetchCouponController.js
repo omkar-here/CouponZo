@@ -53,8 +53,37 @@ const getRedeemedCouponsCount = async (req, res) => {
   }
 };
 
+const getStaticDynamicCouponsCount = async (req, res) => {
+  const userId = req.body.userId;
+  let staticCount = 0;
+  let dynamicCount = 0;
+
+  try {
+    const user = await User.findById(userId);
+    for (const orderId of user.orders) {
+      const order = await Order.findById(orderId);
+      console.log(order);
+
+      if (order.type === "static") {
+        staticCount += order.couponList.length;
+        console.log(staticCount);
+      } else {
+        dynamicCount += order.couponList.length;
+        console.log(dynamicCount);
+      }
+    }
+
+    res.status(200).json({ staticCount, dynamicCount });
+    console.log(res.json);
+  } catch (err) {
+    console.error("Error while fetching coupons:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   getCouponList,
   getUserCouponList,
   getRedeemedCouponsCount,
+  getStaticDynamicCouponsCount,
 };

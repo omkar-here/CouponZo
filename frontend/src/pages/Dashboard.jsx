@@ -20,6 +20,8 @@ export const Dashboard = (props) => {
   const [totalCouponsUsed, setTotalCouponsUsed] = useState(0);
   const [refreshList, setRefreshList] = useState(true);
   const [orderList, setOrderList] = useState();
+  const [staticCount, setStaticCount] = useState(0);
+  const [dynamicCount, setDynamicCount] = useState(0);
   const { userInfo } = useContext(UserContext);
 
   function getTotalCoupons() {
@@ -56,10 +58,23 @@ export const Dashboard = (props) => {
       });
   }
 
+  function getStaticDynamicCount() {
+    axios
+      .post("http://localhost:3000/coupon/fetchStaticDynamicCouponsCount", {
+        userId: userInfo._id,
+      })
+      .then((res) => {
+        console.log(res);
+        setStaticCount(res.data.staticCount);
+        setDynamicCount(res.data.dynamicCount);
+      });
+  }
+
   useEffect(() => {
     getTotalCoupons();
     getTotalUsedCoupons();
     getRecentOrders();
+    getStaticDynamicCount();
   }, [refreshList]);
 
   return (
@@ -215,19 +230,35 @@ export const Dashboard = (props) => {
               Sales analytics
             </span>
             <div>
-              <div className="flex bg-white font-bold rounded-xl shadow-2xl flex-col justify-start items-start">
-                <span className=" pl-3  py-6 text-left">
+              <div className="flex relative bg-white font-bold rounded-xl shadow-2xl flex-col justify-start items-start">
+                <span className="flex pl-3 py-6 pt-3 text-left">
                   <BsFillCartFill className="inline-block mr-2 h-10 w-10 p-2 text-white bg-blue-400 rounded-full" />
                   Static Coupons
                 </span>
+                <div className="absolute bottom-1 right-3">
+                  <p className="font-bold text-xl mb-0 text-black">
+                    <CountUp end={staticCount} duration={4} />
+                  </p>
+                  <p className="font-bold text-xl bg-gradient-to-t mt-[-20px] w-4 from-gray-300 to-transparent transform scale-y-[-1] opacity-20 text-black">
+                    <CountUp end={staticCount} duration={4} />
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="mt-3">
+            <div className="mt-3 relative">
               <div className="flex bg-white font-bold rounded-xl shadow-2xl flex-col justify-start items-start">
-                <span className=" pl-3 py-6 text-left">
+                <span className="flex pl-3 py-6 pt-3 text-left">
                   <GiShoppingBag className="inline-block mr-2 h-10 w-10 p-2 text-white bg-green-400 rounded-full" />
                   Dynamic Coupons
                 </span>
+                <div className="absolute bottom-1 right-3">
+                  <p className="font-bold text-xl mb-0 text-black">
+                    <CountUp end={dynamicCount} duration={4} />
+                  </p>
+                  <p className="font-bold text-xl bg-gradient-to-t mt-[-20px] w-4 from-gray-300 to-transparent transform scale-y-[-1] opacity-20 text-black">
+                    <CountUp end={dynamicCount} duration={4} />
+                  </p>
+                </div>
               </div>
             </div>
             <div className="mt-3 ">
