@@ -105,8 +105,7 @@ exports.coupon_gen = catchAsync(async (req, res) => {
     }
 
     const coupon = await Coupon.insertMany(couponList);
-    console.log(coupon);
-    console.log(order);
+
     // coupon.map((c) => console.log(typeof c._id));
 
     order.couponList = coupon.map((c) => c._id);

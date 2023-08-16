@@ -3,25 +3,26 @@ const User = require("../models/User");
 const Order = require("../models/Order");
 
 exports.confirmCoupon = async (req, res) => {
-  let { couponCode, totalAmount,userId } = req.body;
+  let { couponCode, totalAmount, userId } = req.body;
   if (couponCode != null) {
     try {
-      const user= await User.findById(userId);
+      const user = await User.findById(userId);
+      console.log("User : " + user);
       const coupon = await Coupon.findOne({ code: couponCode });
 
       if (coupon.redemptionLimit > 0 && coupon.expiry > Date.now()) {
         coupon.redemptionLimit -= 1;
         await coupon.save();
-        const order = await Order.findOne({
-          couponList: { $in: [couponCode] },
-        });
-        
-        user.couponsUsed = user.couponsUsed + 1;
+
+        user.totalCouponsUsed = user.totalCouponsUsed + 1;
         await user.save();
+        console.log("redeemCoupon:" + user);
 
         res.json({ message: "Coupon redeemed successfully" }).status(200);
       } else {
-        res.json({ message: "Coupon limit exceeded" }).status(400);
+        res
+          .json({ message: "Coupon expired or Coupon limit exceeded" })
+          .status(400);
       }
     } catch (error) {
       console.log(error);
@@ -31,10 +32,8 @@ exports.confirmCoupon = async (req, res) => {
   }
 };
 exports.setRedemptionLimit = async (req, res) => {
-  console.log("Redmemtion");
   let { couponCode, totalAmount } = req.body;
   const coupon = await Coupon.findOne({ code: couponCode });
-  console.log(coupon);
   coupon.redemptionLimit = 4;
   await coupon.save();
   res.json({ message: "Redemption Limit set successfully" }).status(200);
@@ -43,22 +42,15 @@ exports.verifyCoupon = async (req, res) => {
   let { userId, couponCode, quantity, totalAmount, productIdList } = req.body;
   quantity = parseInt(quantity);
   totalAmount = parseInt(totalAmount);
-  console.log(userId, couponCode, quantity, totalAmount, productIdList);
   const user = await User.findById(userId);
   console.log(user);
-
   let finalAmount = totalAmount;
 
   try {
     if (user) {
       const coupon = await Coupon.findOne({ code: couponCode });
 
-      console.log(coupon);
-
       if (coupon) {
-        console.log(userId);
-        console.log(coupon.userId.toString());
-
         if (userId === coupon.userId.toString()) {
           // CART
 

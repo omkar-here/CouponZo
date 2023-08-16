@@ -30,7 +30,8 @@ exports.getRecentOrderList = async (req, res) => {
         return order;
       })
     );
-    result.sort((a, b) => b.createdAt - a.createdAt);
+    result.sort((a, b) => b.createdAt > a.created);
+    result.reverse();
     const slicedResult = result.slice(0, 5);
     res.json({ result: slicedResult }).status(200);
   } catch (err) {
