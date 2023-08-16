@@ -2,7 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../ContextAPI/UserContext";
-function NewCoupon({ onClose }) {
+function NewCoupon(props) {
+  const {onClose, setRefreshList } = props;
   const { userInfo } = useContext(UserContext);
 
   const [couponDetails, setCouponDetails] = useState({
@@ -35,6 +36,7 @@ function NewCoupon({ onClose }) {
       .then((res) => {
         console.log(res);
         setShowToast(true);
+        setRefreshList(prevState=>!prevState);
         setTimeout(() => {
           setShowToast(false);
         }, 3000);

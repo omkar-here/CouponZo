@@ -4,6 +4,7 @@ const users = require("../controllers/authController");
 const verifyUser = require("../middleware/authMiddleWare");
 router.route("/register").post(users.register);
 router.route("/login").post(users.login);
+router.route("/logout").post(users.logout);
 router.route("/test").get(users.test);
 router.route("/clear").delete(users.clear);
 router.route("/verify").get(verifyUser.verify);

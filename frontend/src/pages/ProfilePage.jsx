@@ -23,7 +23,7 @@ function ProfilePage() {
       axios
       .post("http://localhost:3000/coupon/verify", 
           {
-            userId: "64a1c9e74a47fb83b59c70c1";
+            userId: ${userInfo._id};
             couponCode: __;
             quantity: __;
             totalAmount: __;

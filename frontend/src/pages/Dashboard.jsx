@@ -18,6 +18,7 @@ export const Dashboard = (props) => {
   const [editCoupon, setEditCoupon] = useState(false);
   const [totalCouponsCount, setTotalCouponsCount] = useState(0);
   const [totalCouponsUsed, setTotalCouponsUsed] = useState(0);
+  const [refreshList, setRefreshList] = useState(true);
   const [orderList, setOrderList] = useState();
   const { userInfo } = useContext(UserContext);
 
@@ -34,12 +35,13 @@ export const Dashboard = (props) => {
 
   function getTotalUsedCoupons() {
     axios
-      .post("http://localhost:3000/coupon/fetchRedeemedCoupons", {
+      .post("http://localhost:3000/coupon/fetchRedeemedCouponsCount", {
         userId: userInfo._id,
       })
       .then((res) => {
-        console.log(res.data.userCouponsCount);
-        setTotalCouponsUsed(res.data.userCouponsCount);
+        console.log("User");
+        console.log(res.data.totalCouponsUsed);
+        setTotalCouponsUsed(res.data.totalCouponsUsed);
       });
   }
 
@@ -58,12 +60,15 @@ export const Dashboard = (props) => {
     getTotalCoupons();
     getTotalUsedCoupons();
     getRecentOrders();
-  }, []);
+  }, [refreshList]);
 
   return (
     <div className="flex h-full min-h-screen bg-[#f6f6f9]">
       {showNewCouponModal && (
-        <NewCoupon onClose={() => setShowNewCouponModal(false)} />
+        <NewCoupon
+          setRefreshList={setRefreshList}
+          onClose={() => setShowNewCouponModal(false)}
+        />
       )}
       {editCoupon && <EditCoupon onClose={() => setEditCoupon(false)} />}
       <div className="absolute top-5 right-16">
@@ -102,14 +107,14 @@ export const Dashboard = (props) => {
                 <div className="flex p-8 pl-8 pr-none gap-2">
                   <VscGraph className=" w-14 h-14  text-white bg-blue-400 rounded-full mr-2" />
                   <h2 className="card-title w-40 text-xl font-bold text-left text-black">
-                    Total Coupons Used <p>{totalCouponsUsed}</p>
+                    Total Coupons Used
                   </h2>
                   <div className="absolute bottom-6 right-10">
                     <p className="font-bold text-2xl  mb-0 text-black">
-                      <CountUp end={totalCouponsUsed} duration={2} />
+                      <CountUp end={totalCouponsUsed} duration={4} />
                     </p>
                     <p className="font-bold text-2xl bg-gradient-to-t mt-[-20px] w-4 from-gray-300 to-transparent transform scale-y-[-1] opacity-20 text-black">
-                      <CountUp end={totalCouponsUsed} duration={2} />
+                      <CountUp end={totalCouponsUsed} duration={4} />
                     </p>
                   </div>{" "}
                 </div>
@@ -124,13 +129,13 @@ export const Dashboard = (props) => {
                     <p className="font-bold text-2xl  mb-0 text-black">
                       <CountUp
                         end={totalCouponsCount - totalCouponsUsed}
-                        duration={2}
+                        duration={4}
                       />
                     </p>
                     <p className="font-bold text-2xl bg-gradient-to-t mt-[-20px] w-4 from-gray-300 to-transparent transform scale-y-[-1] opacity-20 text-black">
                       <CountUp
                         end={totalCouponsCount - totalCouponsUsed}
-                        duration={2}
+                        duration={4}
                       />
                     </p>
                   </div>

@@ -6,6 +6,8 @@ import axios from "axios";
 function OrdersPage() {
   const [orderList, setOrderList] = useState([]);
   const { userInfo } = useContext(UserContext);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredOrderList, setFilteredOrderList] = useState([]);
 
   useEffect(() => {
     axios
@@ -15,8 +17,19 @@ function OrdersPage() {
       .then((orderList) => {
         console.log(orderList?.data.result);
         setOrderList(orderList?.data.result);
+        setFilteredOrderList(orderList?.data.result);
       });
   }, []);
+
+  const handleSearchChange = (event) => {
+    const searchValue = event.target.value;
+    setSearchTerm(searchValue);
+    const filteredList = orderList.filter((order) =>
+      order.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
+
+    setFilteredOrderList(filteredList);
+  };
 
   const fetchOrderCoupons = (orderId, index) => {
     // Modified the function parameters
@@ -29,7 +42,7 @@ function OrdersPage() {
       .then((orderCoupons) => {
         // Once the data is fetched, update the orderList state with the new data
         console.log(orderCoupons.data);
-        setOrderList((prevOrderList) => {
+        setFilteredOrderList((prevOrderList) => {
           const updatedOrderList = prevOrderList.map((order, i) => {
             if (i === index) {
               return {
@@ -49,9 +62,9 @@ function OrdersPage() {
   };
 
   const toggleAccordion = (index) => {
-    console.log(orderList[index]._id);
-    fetchOrderCoupons(orderList[index]._id, index);
-    setOrderList((prevOrderList) => {
+    console.log(filteredOrderList[index]._id);
+    fetchOrderCoupons(filteredOrderList[index]._id, index);
+    setFilteredOrderList((prevOrderList) => {
       const updatedOrderList = prevOrderList.map((order, i) => {
         if (i === index) {
           return { ...order, open: !order.open };
@@ -107,10 +120,16 @@ function OrdersPage() {
           </li>
         </ul>
       </div>
-
-      <h3 className="flex font-bold justify-items-start text-2xl mb-5 pt-8">
-        All Orders
-      </h3>
+      <div className="flex items-center justify-between pr-20">
+        <h3 className=" font-bold  text-2xl mb-5 pt-8">All Orders</h3>
+        <input
+          type="text"
+          placeholder="Search your Order"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="inline-block rounded-xl"
+        />
+      </div>
 
       <div className="relative overflow-x-auto overflow-y-auto shadow-md sm:rounded-lg">
         <table className="w-full max-w-full text-left text-gray-500 dark:text-gray-400">
@@ -144,7 +163,7 @@ function OrdersPage() {
             </tr>
           </thead>
           <tbody>
-            {orderList?.map((order, key) => {
+            {filteredOrderList?.map((order, key) => {
               return (
                 <React.Fragment key={key}>
                   <tr
@@ -220,7 +239,7 @@ function OrdersPage() {
                   <tr className="w-full">
                     {order.open && order.couponList?.length > 0 && (
                       <td colSpan={9} className="w-full">
-                        <table className="w-full text-gray-500 dark:text-gray-400">
+                        <table className="w-full text-gray-500 dark:text-gray-400  border-solid border-[1px] border-[#7c8189]">
                           <thead className="w-full text-gray-500 uppercase bg-[#ECECF0] dark:bg-gray-700 dark:text-gray-400">
                             <tr className="text-sm w-full ">
                               <th scope="col" className="px-1 text-center py-3">
@@ -233,7 +252,10 @@ function OrdersPage() {
                                 Coupon Status
                               </th>
                               <th scope="col" className="px-1 text-center py-3">
-                                Coupon Value
+                                Discount Type
+                              </th>
+                              <th scope="col" className="px-1 text-center py-3">
+                                Discount Value
                               </th>
                               <th scope="col" className="px-1 text-center py-3">
                                 Expiry
@@ -244,7 +266,11 @@ function OrdersPage() {
                               <th scope="col" className="px-1 text-center py-3">
                                 Condition value
                               </th>
-                              <th>{}</th>
+                              {/* {order.type === "static" ? (
+                                <th>Coupons Redeemed</th>
+                              ) : (
+                                <></>
+                              )} */}
                             </tr>
                           </thead>
                           {order.coupons?.map((coupon, key) => {
@@ -268,10 +294,18 @@ function OrdersPage() {
                                 </td>
                                 <td
                                   scope="col"
+                                  className="px-1 text-center py-3 select-text"
+                                >
+                                  {coupon.discountType}
+                                </td>
+
+                                <td
+                                  scope="col"
                                   className="px-1 text-center py-3"
                                 >
                                   {coupon.discountValue}
                                 </td>
+
                                 <td
                                   scope="col"
                                   className="px-1 text-center py-3"
@@ -292,6 +326,17 @@ function OrdersPage() {
                                 >
                                   {coupon.conditionsValue}
                                 </td>
+                                {/* {order.type === "static" ? (
+                                  <td
+                                    scope="col"
+                                    className="px-1 text-center py-3"
+                                  >
+                                    {order.couponList?.length -
+                                      coupon.redemptionLimit}
+                                  </td>
+                                ) : (
+                                  <></>
+                                )} */}
                               </tr>
                             );
                           })}

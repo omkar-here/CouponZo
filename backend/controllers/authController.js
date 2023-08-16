@@ -2,9 +2,7 @@ const express = require("express");
 const app = express();
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const maxAge = 1000 * 60 * 60 * 24*10;
-
-
+const maxAge = 1000 * 60 * 60 * 24 * 10;
 
 const createToken = (id) => {
   //signing the jwt (So this will be unique for every user)
@@ -75,26 +73,6 @@ module.exports.login = async (req, res) => {
   }
 };
 
-// module.exports.updateProfile = async (req, res) => {
-//   try {
-//     const { email, userName, companyName } = req.body;
-
-//     const user = await User.findOneAndUpdate(
-//       _id,
-//       {
-//         email: email,
-//         userName: userName,
-//         companyName: companyName,
-//       },
-//       { new: true }
-//     );
-//     res.status(200).json({ user: user._id });
-//   } catch (err) {
-//     const errors = handleErrors(err);
-//     res.status(400).json({ errors });
-//   }
-// };
-
 module.exports.test = async (req, res, next) => {
   const documents = await User.find();
   res.send(documents);
@@ -109,4 +87,8 @@ module.exports.clear = async (req, res, next) => {
 module.exports.verify = async (req, res) => {
   console.log(req.headers);
   res.send(req.headers);
+};
+
+module.exports.logout = async (req, res) => {
+  res.cookie("jwt", "", { maxAge: 1 });
 };
