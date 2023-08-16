@@ -241,10 +241,17 @@ function OrdersPage() {
                               <th scope="col" className="px-1 text-center py-3">
                                 Conditions
                               </th>
+                              {order?.type == "static" && (
+                                <th
+                                  scope="col"
+                                  className="px-1 text-center py-3"
+                                >
+                                  Redemption Limit
+                                </th>
+                              )}
                               <th scope="col" className="px-1 text-center py-3">
                                 Condition value
                               </th>
-                              <th>{}</th>
                             </tr>
                           </thead>
                           {order.coupons?.map((coupon, key) => {
@@ -286,6 +293,14 @@ function OrdersPage() {
                                 >
                                   {coupon.conditions}
                                 </td>
+                                {order?.type == "static" && (
+                                  <td
+                                    scope="col"
+                                    className="px-1 text-center py-3"
+                                  >
+                                    {coupon.redemptionLimit}
+                                  </td>
+                                )}
                                 <td
                                   scope="col"
                                   className="px-1 text-center py-3"

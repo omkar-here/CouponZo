@@ -38,6 +38,7 @@ exports.setRedemptionLimit = async (req, res) => {
   await coupon.save();
   res.json({ message: "Redemption Limit set successfully" }).status(200);
 };
+
 exports.verifyCoupon = async (req, res) => {
   let { userId, couponCode, quantity, totalAmount, productIdList } = req.body;
   quantity = parseInt(quantity);
@@ -55,6 +56,8 @@ exports.verifyCoupon = async (req, res) => {
           // CART
 
           console.log("CART");
+          console.log(coupon.redemptionLimit);
+          console.log(coupon.redemptionLimit > 0 && coupon.expiry > Date.now());
           if (coupon.redemptionLimit > 0 && coupon.expiry > Date.now()) {
             if (coupon.applicableTo === "cart") {
               if (coupon.discountType === "amount") {
@@ -99,9 +102,13 @@ exports.verifyCoupon = async (req, res) => {
                   );
                 }
               } else {
-                res.json({ message: "Coupon not valid for this SKU" });
+                res
+                  .status(401)
+                  .json({ message: "Coupon not valid for this SKU" });
               }
             }
+          } else {
+            res.status(401).json({ message: "Not a valid coupon" });
           }
         }
       } else {

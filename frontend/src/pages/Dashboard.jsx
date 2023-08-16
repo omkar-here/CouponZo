@@ -19,6 +19,8 @@ export const Dashboard = (props) => {
   const [totalCouponsCount, setTotalCouponsCount] = useState(0);
   const [totalCouponsUsed, setTotalCouponsUsed] = useState(0);
   const [orderList, setOrderList] = useState();
+  const [staticCount, setStaticCount] = useState(0);
+  const [dynamicCount, setDynamicCount] = useState(0);
   const { userInfo } = useContext(UserContext);
 
   function getTotalCoupons() {
@@ -54,10 +56,23 @@ export const Dashboard = (props) => {
       });
   }
 
+  function getStaticDynamicCount() {
+    axios
+      .post("http://localhost:3000/coupon/fetchStaticDynamicCouponsCount", {
+        userId: userInfo._id,
+      })
+      .then((res) => {
+        console.log(res);
+        setStaticCount(res.data.staticCount);
+        setDynamicCount(res.data.dynamicCount);
+      });
+  }
+
   useEffect(() => {
     getTotalCoupons();
     getTotalUsedCoupons();
     getRecentOrders();
+    getStaticDynamicCount();
   }, []);
 
   return (
@@ -215,6 +230,7 @@ export const Dashboard = (props) => {
                   <BsFillCartFill className="inline-block mr-2 h-10 w-10 p-2 text-white bg-blue-400 rounded-full" />
                   Static Coupons
                 </span>
+                <span className="pl-3 text-right w-full">{staticCount}</span>
               </div>
             </div>
             <div className="mt-3">
@@ -223,6 +239,7 @@ export const Dashboard = (props) => {
                   <GiShoppingBag className="inline-block mr-2 h-10 w-10 p-2 text-white bg-green-400 rounded-full" />
                   Dynamic Coupons
                 </span>
+                <span className="pl-3 text-right w-full">{dynamicCount}</span>
               </div>
             </div>
             <div className="mt-3 ">
