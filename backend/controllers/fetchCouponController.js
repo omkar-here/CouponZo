@@ -65,7 +65,8 @@ const getStaticDynamicCouponsCount = async (req, res) => {
       console.log(order);
 
       if (order.type === "static") {
-        staticCount += order.couponList.length;
+        const coupon = await Coupon.findById(order.couponList[0]);
+        staticCount += coupon.redemptionLimit;
         console.log(staticCount);
       } else {
         dynamicCount += order.couponList.length;
