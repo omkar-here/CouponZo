@@ -36,15 +36,17 @@ export const Dashboard = (props) => {
   }
 
   function getTotalUsedCoupons() {
-    axios
-      .post("http://localhost:3000/coupon/fetchRedeemedCouponsCount", {
-        userId: userInfo._id,
-      })
-      .then((res) => {
-        console.log("User");
-        console.log(res.data.totalCouponsUsed);
-        setTotalCouponsUsed(res.data.totalCouponsUsed);
-      });
+    // axios
+    //   .post("http://localhost:3000/coupon/fetchRedeemedCouponsCount", {
+    //     userId: userInfo._id,
+    //   })
+    //   .then((res) => {
+    //     console.log("User");
+    //     console.log(res.data.totalCouponsUsed);
+    //     setTotalCouponsUsed(res.data.totalCouponsUsed);
+    //   });
+    console.log("Used Coupons +" ) 
+    setTotalCouponsUsed(userInfo.totalCouponsUsed);
   }
 
   function getRecentOrders() {
@@ -53,7 +55,6 @@ export const Dashboard = (props) => {
         userId: userInfo._id,
       })
       .then((res) => {
-        console.log(res);
         setOrderList(res.data.result);
       });
   }
@@ -71,6 +72,7 @@ export const Dashboard = (props) => {
   }
 
   useEffect(() => {
+
     getTotalCoupons();
     getTotalUsedCoupons();
     getRecentOrders();
@@ -79,6 +81,7 @@ export const Dashboard = (props) => {
 
   return (
     <div className="flex h-full min-h-screen bg-[#f6f6f9]">
+      {console.log(userInfo)}
       {showNewCouponModal && (
         <NewCoupon
           setRefreshList={setRefreshList}

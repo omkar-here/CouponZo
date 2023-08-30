@@ -17,11 +17,13 @@ import { useState } from "react";
 import { UserProvider } from "./Components/ContextAPI/UserContext";
 import OrdersPage from "./pages/OrdersPage";
 import ProfilePage from "./pages/ProfilePage";
+import Landing from "./pages/Landing"
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route exact path="/" element={<Register />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/couponzo" element={<Landing />} />
       <Route
         element={
           <UserProvider>

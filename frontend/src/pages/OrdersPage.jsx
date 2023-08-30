@@ -122,7 +122,7 @@ function OrdersPage() {
       </div>
       <div className="flex items-center justify-between pr-20">
         <h3 className=" font-bold  text-2xl mb-5 pt-8">All Orders</h3>
-        <input
+        <input autoComplete="off"
           type="text"
           placeholder="Search your Order"
           value={searchTerm}
