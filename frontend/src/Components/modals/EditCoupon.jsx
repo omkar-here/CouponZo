@@ -25,14 +25,14 @@ function EditCoupon() {
           <div className="flex flex-row mb-2">
             <div className="flex flex-col mr-4 w-1/2">
               <label className="text-black text-md">Coupon Length</label>
-              <input
+              <input autoComplete="off"
                 type="number"
                 className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
               />
             </div>
             <div className="flex flex-col">
               <label className="text-black text-md">Custom Prefix</label>
-              <input
+              <input autoComplete="off"
                 type="text"
                 className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
               />
@@ -49,7 +49,7 @@ function EditCoupon() {
             </div>
             <div className="flex flex-col">
               <label className="text-black text-md">Discount Value</label>
-              <input
+              <input autoComplete="off"
                 type="number"
                 className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
               />
@@ -66,7 +66,7 @@ function EditCoupon() {
             </div>
             <div className="flex flex-col">
               <label className="text-black text-md">Redemption Limit</label>
-              <input
+              <input autoComplete="off"
                 type="number"
                 className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
               />
@@ -76,7 +76,7 @@ function EditCoupon() {
           <div className="flex flex-row mb-2">
             <div className="flex flex-col mr-4 w-1/2">
               <label className="text-black text-md">Expiry Date</label>
-              <input
+              <input autoComplete="off"
                 type="date"
                 className="border-1 border-purple-300 bg-blue-200 rounded-lg p-2"
               />

@@ -64,7 +64,7 @@ function Register() {
                 >
                   User Name
                 </label>
-                <input
+                <input autoComplete="off"
                   type="text"
                   name="userName"
                   id="userName"
@@ -83,7 +83,7 @@ function Register() {
                 >
                   Email
                 </label>
-                <input
+                <input autoComplete="off"
                   type="email"
                   name="email"
                   id="email"
@@ -104,7 +104,7 @@ function Register() {
                 >
                   Company Name
                 </label>
-                <input
+                <input autoComplete="off"
                   type="text"
                   name="companyName"
                   id="companyName"
@@ -123,7 +123,7 @@ function Register() {
                 >
                   Password
                 </label>
-                <input
+                <input autoComplete="off"
                   type="password"
                   name="password"
                   id="password"
@@ -144,7 +144,7 @@ function Register() {
                 >
                   Confirm Password
                 </label>
-                <input
+                <input autoComplete="off"
                   type="password"
                   name="confPassword"
                   id="confPassword"

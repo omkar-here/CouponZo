@@ -8,7 +8,7 @@ router.route("/logout").post(users.logout);
 router.route("/test").get(users.test);
 router.route("/clear").delete(users.clear);
 router.route("/verify").get(verifyUser.verify);
-router.route("/verify").post(verifyUser.verify);
+// router.route("/verify").post(verifyUser.verify);
 // router.route("/updateProfile").patch(verifyUser.verify,users.updateProfile);
 
 // router.route("/set-cookies").get(users.setCookies);

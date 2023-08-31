@@ -71,7 +71,7 @@ function NewCoupon(props) {
             <div className="flex flex-row mb-2">
               <div className="flex flex-col pr-4 w-1/2">
                 <label className="text-black text-md">Order Name</label>
-                <input
+                <input autoComplete="off"
                   onChange={handleChange}
                   type="text"
                   name="name"
@@ -110,7 +110,7 @@ function NewCoupon(props) {
               </div>
               <div className="flex flex-col pr-4 w-1/5">
                 <label className="text-black text-md">Code Length</label>
-                <input
+                <input autoComplete="off"
                   onChange={handleChange}
                   type="number"
                   name="length"
@@ -120,7 +120,7 @@ function NewCoupon(props) {
               </div>
               <div className="flex flex-col w-2/5">
                 <label className="text-black text-md">Custom Prefix</label>
-                <input
+                <input autoComplete="off"
                   onChange={handleChange}
                   type="text"
                   required
@@ -146,7 +146,7 @@ function NewCoupon(props) {
               {couponDetails.applicableTo === "sku" ? (
                 <div className="flex flex-col w-full">
                   <label className="text-black text-md">Product Id:</label>
-                  <input
+                  <input autoComplete="off"
                     onChange={handleChange}
                     type="text"
                     name="productId"
@@ -165,7 +165,7 @@ function NewCoupon(props) {
                     <span>(in Rs.)</span>
                   )}
                 </label>
-                <input
+                <input autoComplete="off"
                   onChange={handleChange}
                   type="number"
                   name="discountValue"
@@ -194,7 +194,7 @@ function NewCoupon(props) {
                   <label className="text-black text-md">
                     Max Discount (in Rs.){" "}
                   </label>
-                  <input
+                  <input autoComplete="off"
                     onChange={handleChange}
                     type="number"
                     name="maxDiscountAmount"
@@ -212,7 +212,7 @@ function NewCoupon(props) {
                     <p>Number of Coupons</p>
                   )}{" "}
                 </label>
-                <input
+                <input autoComplete="off"
                   onChange={handleChange}
                   type="number"
                   required
@@ -229,7 +229,7 @@ function NewCoupon(props) {
             <div className="flex flex-row mb-2">
               <div className="flex flex-col mr-4 w-1/2">
                 <label className="text-black text-md">Expiry Date</label>
-                <input
+                <input autoComplete="off"
                   onChange={handleChange}
                   type="date"
                   name="expiry"
@@ -253,7 +253,7 @@ function NewCoupon(props) {
               {couponDetails.conditions != "none" && (
                 <div className="flex flex-col ml-4">
                   <label className="text-black text-md">Condition Value</label>
-                  <input
+                  <input autoComplete="off"
                     type="number"
                     onChange={handleChange}
                     required

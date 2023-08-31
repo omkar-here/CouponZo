@@ -46,7 +46,7 @@ function Login() {
                 >
                   Your email
                 </label>
-                <input
+                <input autoComplete="off"
                   type="email"
                   name="email"
                   id="email"
@@ -63,7 +63,7 @@ function Login() {
                 >
                   Password
                 </label>
-                <input
+                <input autoComplete="off"
                   type="password"
                   name="password"
                   id="password"
@@ -76,7 +76,7 @@ function Login() {
               <div className="flex items-center justify-between">
                 <div className="flex items-start">
                   <div className="flex items-center h-5">
-                    <input
+                    <input autoComplete="off"
                       id="remember"
                       aria-describedby="remember"
                       type="checkbox"

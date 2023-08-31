@@ -90,5 +90,6 @@ module.exports.verify = async (req, res) => {
 };
 
 module.exports.logout = async (req, res) => {
-  res.cookie("jwt", "", { maxAge: 1 });
+  res.clearCookie("jwt");
+  res.status(200).json({ message: "Logged out successfully" });
 };
