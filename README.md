@@ -218,10 +218,6 @@ value or a specific product category.
 <a id="links"> </a>
 ## Useful Links
 
-  
-
-- [Project Live Site](https://couponzoapp.netlify.app/)
-
 - [Complete Video Demonstration](https://youtu.be/eihEk82pWTg) <br>
 (This video has everything- right from coupon creation to integration of code with the source code & redemption of coupons)
   
